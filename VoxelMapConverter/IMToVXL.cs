@@ -9,7 +9,8 @@ namespace VoxelMapConverter
     {
         public static int nodeID;
         public static List<int> IDForGroup;
-        public static void IMToVoxel(IntermediateMap map, int approximation)
+
+        public static void IMToVoxel(IntermediateMap map, int colorApproximation)
         {
             FileStream stream = new FileStream("output.vox", FileMode.Create, FileAccess.Write,
                 FileShare.Write);
@@ -25,17 +26,16 @@ namespace VoxelMapConverter
             List<RiffChunk> chunks = new List<RiffChunk>();
 
             //Palette of colors
-            Palette palette = new Palette(approximation);
+            Palette palette = new Palette(colorApproximation);
 
             //Setup for staging nodes
             resetNodeID();
             IDForGroup = new List<int>();
             int masterGRPID = getNextNodeID(); //Pass to master Translate
-
-            //Make translate+shape node for each model
             List<RiffChunk> modelStagings = new List<RiffChunk>();
             int modelID = 0;
 
+            //Seperate the world into 64x64x64 regions that become a model each
             for (int x = 0; x < 512; x+= 64)
             {
                 for(int y = 0; y < 512; y += 64)
@@ -68,7 +68,9 @@ namespace VoxelMapConverter
                         }
                         chunks.Add(xyzi);
 
+                        //Create shape and translate node for the model
                         modelStagings.AddRange(createStagingChunksForModel(x, y, z, modelID)); //Create translate and shape noded for model
+                        //ModelID isn't written to file, it's just the order the models appear
                         modelID++;
                     }
                 }
@@ -100,13 +102,13 @@ namespace VoxelMapConverter
             chunks.AddRange(modelStagings);
 
 
-            //Add in all the layer chunks
+            //Add in all the layer chunks. This may be unneeded
             chunks.AddRange(createLayrChunks());
 
             //RGBA palette chunk
             chunks.Add(palette.getPaletteChunk());
 
-            //Material chunks
+            //Material chunks. May be unneeded
             for(int i = 1; i <= 256; i++)
             {
                 chunks.Add(createMatlChunk(i));
@@ -129,10 +131,12 @@ namespace VoxelMapConverter
                 chunk.writeChunk(writer);
             }
 
+            //Done
             writer.Close();
             stream.Close();
         }
 
+        //We don't use the layer chunks. All objects are layer 1
         public static List<RiffChunk> createLayrChunks()
         {
             List<RiffChunk> chunksResult = new List<RiffChunk>();
@@ -154,6 +158,7 @@ namespace VoxelMapConverter
             return chunkResult;
         }
 
+        //For staging nodes
         public static void resetNodeID()
         {
             nodeID = 0; //Starts at 1.
@@ -191,6 +196,7 @@ namespace VoxelMapConverter
             return new List<RiffChunk>(){TranslateChunk, ShapeChunk};
         }
 
+        //Might not be needed. Create 256 identical material chunks
         public static RiffChunk createMatlChunk(int matlID)
         {
             RiffChunk matlChunk = new RiffChunk("MATL");
@@ -212,6 +218,7 @@ namespace VoxelMapConverter
             return matlChunk;
         }
 
+        //This one is a mess. But no reason to waste time cleaning it.
         public static List<RiffChunk> createROBJChunks()
         {
             List<RiffChunk> chunksResult = new List<RiffChunk>();
@@ -350,48 +357,6 @@ namespace VoxelMapConverter
             dictsetting.Add(("_cell", "1"));
             robjchunksetting.addData(new DictChunkData(dictsetting));
             chunksResult.Add(robjchunksetting);
-
-            /*          Used in the 3x3x3 example but not the newer one
-                        RiffChunk robjchunk3 = new RiffChunk("rOBJ");
-                        List<(string, string)> dict3 = new List<(string, string)>();
-                        dict3.Add(("_type", "_rayleigh"));
-                        dict3.Add(("_d", "0.4"));
-                        dict3.Add(("_k", "77 153 255"));
-                        robjchunk3.addData(new DictChunkData(dict3));
-                        chunksResult.Add(robjchunk3);
-
-                        RiffChunk robjchunk4 = new RiffChunk("rOBJ");
-                        List<(string, string)> dict4 = new List<(string, string)>();
-                        dict4.Add(("_type", "_mie"));
-                        dict4.Add(("_d", "0.4"));
-                        dict4.Add(("_k", "255 255 255"));
-                        dict4.Add(("_g", "0.78"));
-                        robjchunk4.addData(new DictChunkData(dict4));
-                        chunksResult.Add(robjchunk4);
-
-                        RiffChunk robjchunk5 = new RiffChunk("rOBJ");
-                        List<(string, string)> dict5 = new List<(string, string)>();
-                        dict5.Add(("_type", "_fog"));
-                        dict5.Add(("_d", "0.2"));
-                        dict5.Add(("_k", "255 255 255"));
-                        dict5.Add(("_enable", "0"));
-                        robjchunk5.addData(new DictChunkData(dict5));
-                        chunksResult.Add(robjchunk5);
-
-                        RiffChunk robjchunk6 = new RiffChunk("rOBJ");
-                        List<(string, string)> dict6 = new List<(string, string)>();
-                        dict6.Add(("_type", "_len"));
-                        dict6.Add(("_fov", "45"));
-                        dict6.Add(("_dof", "0.25"));
-                        dict6.Add(("_exp", "0"));
-                        dict6.Add(("_vig", "0"));
-                        dict6.Add(("_sg", "0"));
-                        dict6.Add(("_gam", "2.2"));
-                        dict6.Add(("_blade_n", "0"));
-                        dict6.Add(("_blade_r", "0"));
-                        robjchunk6.addData(new DictChunkData(dict6));
-                        chunksResult.Add(robjchunk6);
-            */
 
             return chunksResult;
         }

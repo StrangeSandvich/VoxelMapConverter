@@ -1,0 +1,14 @@
+Todo and wishlist:
+
+Don't generate high empty objects when converting flat maps. 
+Better color approximation and reducer
+Somehow figure out map height??
+Somehow ignore ocean/ocean colors
+Avoid palette ID's that Sectors Edge uses for special things
+Ability to pick color of Solid AoS blocks (Currently black)
+Ability to pick output file name
+
+
+Convert BlockNLoad maps
+Convert Minecraft Schematics
+(Use Timothees stuff)
