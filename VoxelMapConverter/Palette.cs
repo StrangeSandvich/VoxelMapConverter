@@ -17,10 +17,15 @@ namespace VoxelMapConverter
 
         public int getColorIndex((int, int, int) color)
         {
-            int index = palette.FindIndex(x => x == color);
+            int index = palette.FindIndex(x => x.Item1 + 10 > color.Item1 && x.Item1-10 < color.Item1 && x.Item2 + 10 > color.Item2 && x.Item2 - 10 < color.Item2 && x.Item3 + 10 > color.Item3 && x.Item3 - 10 < color.Item3);
             if(index != -1)
             {
                 return index+1;
+            }
+            if(palette.Count >= 255)
+            {
+                Console.WriteLine("Warning: Ran out of color indexes. Printing last encountered color to all new colors");
+                return 255;
             }
             palette.Add(color);
             return palette.Count; //Index+1 of new insert

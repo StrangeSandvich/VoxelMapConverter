@@ -24,42 +24,61 @@ namespace VoxelMapConverter
             //List of chunks
             List<RiffChunk> chunks = new List<RiffChunk>();
 
-            //Hardcode size to be 32x32x32
-            RiffChunk size = new RiffChunk("SIZE");
-            size.addData(new IntChunkData(32));
-            size.addData(new IntChunkData(32));
-            size.addData(new IntChunkData(32));
-
+            //Palette of colors
             Palette palette = new Palette();
 
-            RiffChunk xyzi = new RiffChunk("XYZI");
-            List<Voxel> voxels = map.getListOfVoxels(0, 32, 0, 32, 0, 32);
-            xyzi.addData(new IntChunkData(voxels.Count));
-            foreach(Voxel voxel in voxels)
-            {
-                int colorIndex = palette.getColorIndex(voxel.getColorTuple());
-
-                xyzi.addData(new VoxelChunkData(Convert.ToByte(voxel.x), Convert.ToByte(voxel.y), Convert.ToByte(voxel.z), Convert.ToByte(colorIndex)));
-            }
-
-            //The tiny part that actually matters
-            chunks.Add(size);
-            chunks.Add(xyzi);
-
-            //Make all the staging chunks
+            //Setup for staging nodes
             resetNodeID();
             IDForGroup = new List<int>();
             int masterGRPID = getNextNodeID(); //Pass to master Translate
 
             //Make translate+shape node for each model
             List<RiffChunk> modelStagings = new List<RiffChunk>();
-            modelStagings.AddRange(createStagingChunksForModel(0, 0, 20, 0)); //Hardcode single model
+            int modelID = 0;
+
+            for (int x = 0; x < 512; x+= 64)
+            {
+                for(int y = 0; y < 512; y += 64)
+                {
+                    for(int z = 0; z < 256; z += 64)
+                    {
+                        //Hardcode size to be 64x64x64
+                        RiffChunk size = new RiffChunk("SIZE");
+                        size.addData(new IntChunkData(64));
+                        size.addData(new IntChunkData(64));
+                        size.addData(new IntChunkData(64));
+                        chunks.Add(size);
+
+                        //Get a region of voxels and make them a model
+                        RiffChunk xyzi = new RiffChunk("XYZI");
+                        List<Voxel> voxels = map.getListOfVoxels(x, x+64, y, y+64, z, z+64);
+                        xyzi.addData(new IntChunkData(voxels.Count));
+                        foreach (Voxel voxel in voxels)
+                        {
+                            int colorIndex = palette.getColorIndex(voxel.getColorTuple());
+                            try
+                            {
+                                xyzi.addData(new VoxelChunkData(Convert.ToByte(voxel.x-x), Convert.ToByte(voxel.y-y), Convert.ToByte(voxel.z-z), Convert.ToByte(colorIndex)));
+                            } catch(Exception e)
+                            {
+                                Console.WriteLine("Byte overflow with voxel " + voxel.x + ", " + voxel.y + ", " + voxel.z + ". With object xyz being " + x + ", " + y + "," + z);
+                                Console.WriteLine("Color index of " + colorIndex);
+                                throw e;
+                            }
+                        }
+                        chunks.Add(xyzi);
+
+                        modelStagings.AddRange(createStagingChunksForModel(x, y, z, modelID)); //Create translate and shape noded for model
+                        modelID++;
+                    }
+                }
+            }
 
             //Master group node
             RiffChunk masterGRP = new RiffChunk("nGRP");
             masterGRP.addData(new IntChunkData(masterGRPID));
             masterGRP.addData(new DictChunkData()); //empty dict
-            masterGRP.addData(new IntChunkData(modelStagings.Count / 2)); //Number of models
+            masterGRP.addData(new IntChunkData(modelID + 1)); //Number of models
             foreach(int nodeID in IDForGroup)
             {
                 masterGRP.addData(new IntChunkData(nodeID));
@@ -75,6 +94,7 @@ namespace VoxelMapConverter
             masterTRN.addData(new IntChunkData(1)); //Number of frames is always 1
             masterTRN.addData(new DictChunkData()); //Empty dict. No translation of master
 
+            //Put in all the staging chunks
             chunks.Add(masterTRN);
             chunks.Add(masterGRP);
             chunks.AddRange(modelStagings);
