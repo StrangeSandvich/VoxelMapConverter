@@ -9,7 +9,7 @@ namespace VoxelMapConverter
     {
         public static int nodeID;
         public static List<int> IDForGroup;
-        public static void IMToVoxel(IntermediateMap map)
+        public static void IMToVoxel(IntermediateMap map, int approximation)
         {
             FileStream stream = new FileStream("output.vox", FileMode.Create, FileAccess.Write,
                 FileShare.Write);
@@ -25,7 +25,7 @@ namespace VoxelMapConverter
             List<RiffChunk> chunks = new List<RiffChunk>();
 
             //Palette of colors
-            Palette palette = new Palette();
+            Palette palette = new Palette(approximation);
 
             //Setup for staging nodes
             resetNodeID();
@@ -185,7 +185,7 @@ namespace VoxelMapConverter
             TranslateChunk.addData(new IntChunkData(0)); //Layer ID
             TranslateChunk.addData(new IntChunkData(1)); //Number of frames is always 1
             List<(string, string)> dict = new List<(string, string)>();
-            dict.Add(("_t", "" + offsetX + " " + offsetY + " " + offsetZ)); //Translation
+            dict.Add(("_t", "" + (offsetX+32) + " " + (offsetY+32) + " " + (offsetZ+32))); //Translation
             TranslateChunk.addData(new DictChunkData(dict));
 
             return new List<RiffChunk>(){TranslateChunk, ShapeChunk};
