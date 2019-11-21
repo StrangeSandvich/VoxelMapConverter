@@ -37,7 +37,7 @@ namespace VoxelMapConverter
                     Console.WriteLine("That did not seem like a number. Try again:");
                 }
             }
-            Console.WriteLine("Alright, here I go parsing the Ace of Spades map");
+            Console.WriteLine("Alright, here I go parsing the Ace of Spades map. This might take a few seconds...");
             IntermediateMap map = AceOfSpadesToIM.ToIntermediateMap(AoSMapData, aoSMapHeight);
             Console.WriteLine("Parsing went well! Now I just need to write it to a vox file.");
             Console.WriteLine("However, a vox file can only have 255 different colours and an AoS map can easily have more. Therefore I will likely need to combine some colors.");
@@ -56,7 +56,7 @@ namespace VoxelMapConverter
                     Console.WriteLine("That did not seem like a number. Try again:");
                 }
             }
-            Console.WriteLine("Alright, I'll try write the vox file with that");
+            Console.WriteLine("Alright, I'll try write the vox file with that. Might take a couple of seconds...");
             IMToVXL.IMToVoxel(map, colorApprox);
             Console.WriteLine("There we are. There should now be a nice output.vox with your map :)");
             Console.WriteLine("Press enter to close");
