@@ -29,5 +29,13 @@ namespace VoxelMapConverter
             green = 0;
             blue = 0;
         }
+
+        public Block(int ID, int red, int green, int blue)
+        {
+            this.ID = ID;
+            this.red = red;
+            this.green = green;
+            this.blue = blue;
+        }
     }
 }

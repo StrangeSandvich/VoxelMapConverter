@@ -10,9 +10,9 @@ namespace VoxelMapConverter
         public static int nodeID;
         public static List<int> IDForGroup;
 
-        public static void IMToVoxel(IntermediateMap map, int colorApproximation)
+        public static void IMToVoxel(IntermediateMap map, int colorApproximation, string outfileName)
         {
-            FileStream stream = new FileStream("output.vox", FileMode.Create, FileAccess.Write,
+            FileStream stream = new FileStream(outfileName, FileMode.Create, FileAccess.Write,
                 FileShare.Write);
             BinaryWriter writer = new BinaryWriter(stream);
 
@@ -42,6 +42,14 @@ namespace VoxelMapConverter
                 {
                     for(int z = 0; z < 256; z += 64)
                     {
+                        //Find out if chunk even has any voxels
+                        List<Voxel> voxels = map.getListOfVoxels(x, x + 64, y, y + 64, z, z + 64);
+                        if(voxels.Count == 0)
+                        {
+                            //Don't create the object if there are no voxels
+                            continue;
+                        }
+
                         //Hardcode size to be 64x64x64
                         RiffChunk size = new RiffChunk("SIZE");
                         size.addData(new IntChunkData(64));
@@ -51,7 +59,6 @@ namespace VoxelMapConverter
 
                         //Get a region of voxels and make them a model
                         RiffChunk xyzi = new RiffChunk("XYZI");
-                        List<Voxel> voxels = map.getListOfVoxels(x, x+64, y, y+64, z, z+64);
                         xyzi.addData(new IntChunkData(voxels.Count));
                         foreach (Voxel voxel in voxels)
                         {
@@ -218,7 +225,7 @@ namespace VoxelMapConverter
             return matlChunk;
         }
 
-        //This one is a mess. But no reason to waste time cleaning it.
+        //This method is a mess. But no reason to waste time cleaning it.
         public static List<RiffChunk> createROBJChunks()
         {
             List<RiffChunk> chunksResult = new List<RiffChunk>();

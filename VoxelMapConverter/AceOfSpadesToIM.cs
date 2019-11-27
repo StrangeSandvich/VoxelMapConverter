@@ -11,9 +11,9 @@ namespace VoxelMapConverter
         private const int aosSizeY = 512;
         private const int IMSizeZ = 256;
         //Size Z varies by map, with no real way to read it. Get the user to input it. 
-        public static IntermediateMap ToIntermediateMap(byte[] AoSMapData, int aosSizeZ)
+        public static IntermediateMap ToIntermediateMap(byte[] AoSMapData, int aosSizeZ, int solidRed, int solidGreen, int solidBlue)
         {
-            IntermediateMap mapResult = new IntermediateMap(aosSizeX, aosSizeY, IMSizeZ, Block.AOSSOLID);
+            IntermediateMap mapResult = new IntermediateMap(aosSizeX, aosSizeY, IMSizeZ, Block.AOSSOLID, solidRed, solidGreen, solidBlue);
             
             //Go through each column
             int columnStart = 0;

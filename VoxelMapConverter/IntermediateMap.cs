@@ -33,6 +33,30 @@ namespace VoxelMapConverter
             }
         }
 
+        public IntermediateMap(int sizeX, int sizeY, int sizeZ, int filltype, int fillRed, int fillGreen, int fillBlue)
+        {
+            this.sizeX = sizeX;
+            this.sizeY = sizeY;
+            this.sizeZ = sizeZ;
+
+            mapXYZI = new List<List<List<Block>>>(sizeX);
+            //Creates map with all blocks of filltype
+            for (int x = 0; x < sizeX; x++)
+            {
+                List<List<Block>> slice = new List<List<Block>>(sizeY);
+                for (int y = 0; y < sizeY; y++)
+                {
+                    List<Block> column = new List<Block>(sizeZ);
+                    for (int z = 0; z < sizeZ; z++)
+                    {
+                        column.Add(new Block(filltype, fillRed, fillGreen, fillBlue));
+                    }
+                    slice.Add(column);
+                }
+                mapXYZI.Add(slice);
+            }
+        }
+
         public Block getBlockAt(int x, int y, int z)
         {
             if (x < 0 || x >= sizeX || y < 0 || y >= sizeY || z < 0 || z >= sizeZ)
