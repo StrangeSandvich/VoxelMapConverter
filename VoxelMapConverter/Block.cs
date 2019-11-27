@@ -9,33 +9,25 @@ namespace VoxelMapConverter
         public const int UNASSIGNED = 0;
         public const int AIR = -1;
         public const int AOSSOLID = -2;
-        public int red { get; set; }
-        public int green { get; set; }
-        public int blue { get; set; }
+        public RGBColor color { get; set; }
         public int ID { get; set; }
 
-        public Block(int red, int green, int blue)
+        public Block(RGBColor color)
         {
             ID = UNASSIGNED;
-            this.red = red;
-            this.green = green;
-            this.blue = blue;
+            this.color = color;
         }
 
         public Block(int ID)
         {
             this.ID = ID;
-            red = 0;
-            green = 0;
-            blue = 0;
+            this.color = new RGBColor(0, 0, 0);
         }
 
-        public Block(int ID, int red, int green, int blue)
+        public Block(int ID, RGBColor color)
         {
             this.ID = ID;
-            this.red = red;
-            this.green = green;
-            this.blue = blue;
+            this.color = color;
         }
     }
 }

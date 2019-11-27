@@ -11,17 +11,17 @@ namespace VoxelMapConverter
         public int approximation;
 
         //Please don't shuffle around your indexes
-        public List<(int, int, int)> palette = new List<(int, int, int)>();
+        public List<RGBColor> palette = new List<RGBColor>();
 
         public Palette(int approximation)
         {
             this.approximation = approximation;
-            palette.Add((0, 0, 0));
+            palette.Add(new RGBColor(0,0,0));
         }
 
-        public int getColorIndex((int, int, int) color)
+        public int getColorIndex(RGBColor color)
         {
-            int index = palette.FindIndex(x => x.Item1 + approximation > color.Item1 && x.Item1-approximation < color.Item1 && x.Item2 + approximation > color.Item2 && x.Item2 - approximation < color.Item2 && x.Item3 + approximation > color.Item3 && x.Item3 - approximation < color.Item3);
+            int index = palette.FindIndex(x => x.red + approximation > color.red && x.red - approximation < color.red && x.green + approximation > color.green && x.green - approximation < color.green && x.blue + approximation > color.blue && x.blue - approximation < color.blue);
             if(index != -1)
             {
                 return index+1;
@@ -38,13 +38,13 @@ namespace VoxelMapConverter
         public RiffChunk getPaletteChunk()
         {
             RiffChunk resultChunk = new RiffChunk("RGBA");
-            foreach((int, int, int) color in palette)
+            foreach(RGBColor color in palette)
             {
                 //RGBA
-                resultChunk.addData(new ByteChunkData(color.Item1)); 
-                resultChunk.addData(new ByteChunkData(color.Item2));
-                resultChunk.addData(new ByteChunkData(color.Item3));
-                resultChunk.addData(new ByteChunkData(255));
+                resultChunk.addData(new ByteChunkData(color.red)); 
+                resultChunk.addData(new ByteChunkData(color.green));
+                resultChunk.addData(new ByteChunkData(color.blue));
+                resultChunk.addData(new ByteChunkData(255)); //Magicavoxel doesn't seem to use this, but keeps all of them at 255
             }
             for(int i = 0; i < 255-palette.Count; i++)
             {

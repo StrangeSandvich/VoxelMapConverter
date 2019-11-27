@@ -28,12 +28,21 @@ namespace VoxelMapConverter
             Console.WriteLine("Can you please give me the height of the map? For beta AoS it should be 64 and for Jagex AoS it could be up to 256");
             Console.WriteLine("If you overshoot, there will just be some extra ground layers. If you undershoot, I will have a crash:");
             aoSMapHeight = ReadInt();
-            Console.WriteLine("And then finally, AoS maps don't store the color of underground \"solid\" blocks. Until Dodo creates a better system, give me 3 color values between 0 and 255 for RGB:");
-            int solidRed = ReadInt();
-            int solidGreen = ReadInt();
-            int solidBlue = ReadInt();
+            Console.WriteLine("AoS maps don't store the color of underground \"solid\" blocks. Give me a color or the RGB values seperated by a space:");
+            RGBColor solidColor;
+            while(true)
+            {
+                try
+                {
+                    solidColor = new RGBColor(Console.ReadLine());
+                    break;
+                } catch (Exception e)
+                {
+                    Console.WriteLine("I don't know that color. Try again");
+                }
+            }
             Console.WriteLine("Alright, here I go parsing the Ace of Spades map. This might take a few seconds...");
-            IntermediateMap map = AceOfSpadesToIM.ToIntermediateMap(AoSMapData, aoSMapHeight, solidRed, solidGreen, solidBlue);
+            IntermediateMap map = AceOfSpadesToIM.ToIntermediateMap(AoSMapData, aoSMapHeight, solidColor);
             Console.WriteLine("Parsing went well! Now I just need to write it to a vox file.");
             Console.WriteLine("What do you want me to call the output file (Excluding the .vox). Input nothing to use the name of the input map:");
             string outname = Console.ReadLine();

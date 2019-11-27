@@ -62,7 +62,7 @@ namespace VoxelMapConverter
                         xyzi.addData(new IntChunkData(voxels.Count));
                         foreach (Voxel voxel in voxels)
                         {
-                            int colorIndex = palette.getColorIndex(voxel.getColorTuple());
+                            int colorIndex = palette.getColorIndex(voxel.color);
                             try
                             {
                                 xyzi.addData(new VoxelChunkData(Convert.ToByte(voxel.x-x), Convert.ToByte(voxel.y-y), Convert.ToByte(voxel.z-z), Convert.ToByte(colorIndex)));

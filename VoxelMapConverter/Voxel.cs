@@ -7,16 +7,14 @@ namespace VoxelMapConverter
     class Voxel
     {
         public int x, y, z;
-        public int red, green, blue;
+        public RGBColor color { get; set; }
 
-        public Voxel(int x, int y, int z, int red, int green, int blue)
+        public Voxel(int x, int y, int z, RGBColor color)
         {
             this.x = x;
             this.y = y;
             this.z = z;
-            this.red = red;
-            this.green = green;
-            this.blue = blue;
+            this.color = color;
         }
 
         public Voxel(int x, int y, int z, Block block)
@@ -24,14 +22,7 @@ namespace VoxelMapConverter
             this.x = x;
             this.y = y;
             this.z = z;
-            this.red = block.red;
-            this.green = block.green;
-            this.blue = block.blue;
-        }
-
-        public (int, int, int) getColorTuple()
-        {
-            return (red, green, blue);
+            this.color = block.color;
         }
     }
 }

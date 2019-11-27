@@ -11,9 +11,9 @@ namespace VoxelMapConverter
         private const int aosSizeY = 512;
         private const int IMSizeZ = 256;
         //Size Z varies by map, with no real way to read it. Get the user to input it. 
-        public static IntermediateMap ToIntermediateMap(byte[] AoSMapData, int aosSizeZ, int solidRed, int solidGreen, int solidBlue)
+        public static IntermediateMap ToIntermediateMap(byte[] AoSMapData, int aosSizeZ, RGBColor solidcolor)
         {
-            IntermediateMap mapResult = new IntermediateMap(aosSizeX, aosSizeY, IMSizeZ, Block.AOSSOLID, solidRed, solidGreen, solidBlue);
+            IntermediateMap mapResult = new IntermediateMap(aosSizeX, aosSizeY, IMSizeZ, Block.AOSSOLID, solidcolor);
             
             //Go through each column
             int columnStart = 0;
@@ -47,7 +47,7 @@ namespace VoxelMapConverter
                             int blue = AoSMapData[spanStart + 4 + i * 4];
                             int green = AoSMapData[spanStart + 5 + i * 4];
                             int red = AoSMapData[spanStart + 6 + i * 4];
-                            mapResult.setBlockAt(x, y, z, new Block(red, green, blue));
+                            mapResult.setBlockAt(x, y, z, new Block(new RGBColor(red, green, blue)));
                             z--;
                         }
 
@@ -71,7 +71,7 @@ namespace VoxelMapConverter
                             int blue = AoSMapData[spanStart + 4 + j * 4];
                             int green = AoSMapData[spanStart + 5 + j * 4];
                             int red = AoSMapData[spanStart + 6 + j * 4];
-                            mapResult.setBlockAt(x, y, z, new Block(red, green, blue));
+                            mapResult.setBlockAt(x, y, z, new Block(new RGBColor(red, green, blue)));
                             z--;
                         }
 

@@ -6,6 +6,7 @@ Better way to store and circulate color values than triple ints
 Somehow figure out map height??
 Somehow ignore ocean/ocean colors
 Avoid palette ID's that Sectors Edge uses for special things
+Recognize more color names
 
 
 Convert BlockNLoad maps

@@ -33,7 +33,7 @@ namespace VoxelMapConverter
             }
         }
 
-        public IntermediateMap(int sizeX, int sizeY, int sizeZ, int filltype, int fillRed, int fillGreen, int fillBlue)
+        public IntermediateMap(int sizeX, int sizeY, int sizeZ, int filltype, RGBColor fillColor)
         {
             this.sizeX = sizeX;
             this.sizeY = sizeY;
@@ -49,7 +49,7 @@ namespace VoxelMapConverter
                     List<Block> column = new List<Block>(sizeZ);
                     for (int z = 0; z < sizeZ; z++)
                     {
-                        column.Add(new Block(filltype, fillRed, fillGreen, fillBlue));
+                        column.Add(new Block(filltype, fillColor));
                     }
                     slice.Add(column);
                 }
