@@ -1,13 +1,11 @@
 Todo and wishlist:
 
 Better color approximation and reducer
-Better way to input solid ground color 
-Better way to store and circulate color values than triple ints
 Somehow figure out map height??
 Somehow ignore ocean/ocean colors
 Avoid palette ID's that Sectors Edge uses for special things
 Recognize more color names
-
+Recognized color names: red, blue, green, black, white, dirt, grey, silver
 
 Convert BlockNLoad maps
 Convert Minecraft Schematics

@@ -26,8 +26,14 @@ Put in the Ace of Spades map name. (If you want to convert MyMap.vxl, put in "My
 
 Give the program the map height. (64 if it is a map from before Jagex. If you are unsure put 256)
 
+Give the program the color for the solid blocks. 
+
 Let the program parse the map.
+
+Give the program the name of the output file. Leave empty to use input name for output name.
 
 Give the program a color approximation level between 0 and 16. Try to find the lowest value that doesn't cause the program to run out of colors.
 
-Find the output.vox file next to the program when done. 
+Let the program write the .vox file.
+
+Find the output file next to the program when done. 
