@@ -82,5 +82,20 @@ namespace VoxelMapConverter
             }
         }
 
+        public bool Appoximate(int level, RGBColor other)
+        {
+            int redDifference = Math.Abs(other.red - red);
+            if(redDifference > level)
+            {
+                return false;
+            }
+            int greenDifference = Math.Abs(other.green - green);
+            if(greenDifference > level)
+            {
+                return false;
+            }
+            int blueDifference = Math.Abs(other.blue - blue);
+            return !(blueDifference > level);
+        }
     }
 }

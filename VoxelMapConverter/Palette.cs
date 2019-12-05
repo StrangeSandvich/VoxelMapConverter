@@ -21,7 +21,7 @@ namespace VoxelMapConverter
 
         public int getColorIndex(RGBColor color)
         {
-            int index = palette.FindIndex(x => x.red + approximation > color.red && x.red - approximation < color.red && x.green + approximation > color.green && x.green - approximation < color.green && x.blue + approximation > color.blue && x.blue - approximation < color.blue);
+            int index = palette.FindIndex(x => x.Appoximate(approximation, color));
             if(index != -1)
             {
                 return index+1;
