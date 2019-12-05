@@ -10,7 +10,7 @@ namespace VoxelMapConverter
         public const int AIR = -1;
         public const int AOSSOLID = -2;
         public RGBColor color { get; set; }
-        public int ID { get; set; }
+        public int ID { get;}
 
         public Block(RGBColor color)
         {

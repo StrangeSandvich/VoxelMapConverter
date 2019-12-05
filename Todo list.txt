@@ -2,9 +2,7 @@ Todo and wishlist:
 
 Better color approximation and reducer
 Functionality to merge color indexes
-Somehow figure out map height??
-Somehow ignore ocean/ocean colors
-Functionality to add additional ground layers
+Functionality to add additional ground layers for maps without open ocean. 
 Avoid palette ID's that Sectors Edge uses for special things
 Give underground solid color a seperate color index which can then be set in MagicaVoxel
 Make sure color approximation doesn't approximate onto index 1 or 2

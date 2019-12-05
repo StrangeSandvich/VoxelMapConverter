@@ -36,14 +36,21 @@ namespace VoxelMapConverter
             int modelID = 0;
 
             //Seperate the world into 64x64x64 regions that become a model each
+            int mapheight = 256 - map.groundHeight;
             for (int x = 0; x < 512; x+= 64)
             {
                 for(int y = 0; y < 512; y += 64)
                 {
-                    for(int z = 0; z < 256; z += 64)
+                    for(int z = 0; z < mapheight+64; z += 64) //Map may not be that high, but getListOfVoxels will just return nothing for out of bounds values. 
                     {
+                        //Make sure not to go out of bounds
+                        int upperBlock = z + 64;
+                        if (upperBlock > mapheight)
+                        {
+                            upperBlock = mapheight;
+                        }
+                        List<Voxel> voxels = map.getListOfVoxels(x, x + 64, y, y + 64, z, upperBlock);
                         //Find out if chunk even has any voxels
-                        List<Voxel> voxels = map.getListOfVoxels(x, x + 64, y, y + 64, z, z + 64);
                         if(voxels.Count == 0)
                         {
                             //Don't create the object if there are no voxels
