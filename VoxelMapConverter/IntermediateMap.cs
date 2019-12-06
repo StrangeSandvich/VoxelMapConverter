@@ -6,10 +6,9 @@ namespace VoxelMapConverter
 {
     class IntermediateMap
     {
-        private int sizeX, sizeY, sizeZ;
+        public int sizeX, sizeY, sizeZ;
         //private List<List<List<Block>>> mapXYZI;
         private Block[,,] mapXYZI;
-        public int groundHeight { get; set; }
         public Block fillBlock;
         public Palette palette { get; }
 
@@ -18,7 +17,6 @@ namespace VoxelMapConverter
             this.sizeX = sizeX;
             this.sizeY = sizeY;
             this.sizeZ = sizeZ;
-            this.groundHeight = 0;
             this.palette = new Palette();
             this.fillBlock = new Block(filltype, palette);
 
@@ -28,23 +26,23 @@ namespace VoxelMapConverter
 
         public Block getBlockAt(int x, int y, int z)
         {
-            if (x < 0 || x >= sizeX || y < 0 || y >= sizeY || z < 0 || z >= sizeZ - groundHeight)
+            if (x < 0 || x >= sizeX || y < 0 || y >= sizeY || z < 0 || z >= sizeZ)
             {
                 throw new ArgumentOutOfRangeException();
             }
-            if (mapXYZI[x,y,z+groundHeight] == null){
+            if (mapXYZI[x,y,z] == null){
                 return fillBlock;
             }
-            return mapXYZI[x,y,z+groundHeight];
+            return mapXYZI[x,y,z];
         }
 
         public void setBlockAt(int x, int y, int z, Block block)
         {
-            if (x < 0 || x >= sizeX || y < 0 || y >= sizeY || z < 0 || z >= sizeZ-groundHeight)
+            if (x < 0 || x >= sizeX || y < 0 || y >= sizeY || z < 0 || z >= sizeZ)
             {
                 throw new ArgumentOutOfRangeException();
             }
-            mapXYZI[x,y,z+groundHeight] = block;
+            mapXYZI[x,y,z] = block;
         }
 
         //Reduce number of colors in palette to count 
@@ -58,7 +56,7 @@ namespace VoxelMapConverter
             {
                 for(int y = 0; y < sizeY; y++)
                 {
-                    for(int z = groundHeight; z < sizeZ; z++)
+                    for(int z = 0; z < sizeZ; z++)
                     {
                         Block block = mapXYZI[x, y, z];
                         //Don't bother with air, fill or solid blocks

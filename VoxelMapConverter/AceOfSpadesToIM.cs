@@ -9,12 +9,10 @@ namespace VoxelMapConverter
     {
         private const int aosSizeX = 512;
         private const int aosSizeY = 512;
-        private const int IMSizeZ = 256;
+        //private const int IMSizeZ = 256;
         //Size Z varies by map, but should be 256 at most. Figure out map height by lowest block and then add that in. 
         public static IntermediateMap ToIntermediateMap(byte[] AoSMapData, bool keepOcean)
         {
-            IntermediateMap mapResult = new IntermediateMap(aosSizeX, aosSizeY, IMSizeZ, Block.AOSSOLID);
-            Palette palette = mapResult.palette;
             
             //Go through each column
             int columnStart = 0;
@@ -24,13 +22,15 @@ namespace VoxelMapConverter
                 groundHeight++;
             }
             int mapHeight = 256 - groundHeight;
+            IntermediateMap mapResult = new IntermediateMap(aosSizeX, aosSizeY, mapHeight, Block.AOSSOLID);
+            Palette palette = mapResult.palette;
             Block airBlock = new Block(Block.AIR, palette);
             for (int x = 0; x < aosSizeX; x++)
             {
                 for (int y = 0; y < aosSizeY; y++)
                 {
                     int spanStart = columnStart;
-                    int z = IMSizeZ - 1;
+                    int z = mapHeight - 1;
                     while (true)
                     {
                         //Read span metadata
@@ -41,7 +41,7 @@ namespace VoxelMapConverter
                         int i; //Offset into data bytes
                         
                         //Value where z = 0 is the bottom of the map
-                        int top_color_switched = IMSizeZ - top_color_start - 1;
+                        int top_color_switched = mapHeight - top_color_start - 1;
 
                         //Air run. Start at the latest z and go down to top_color_start
                         for (/*Use z*/; z > top_color_switched; z--){
@@ -77,7 +77,7 @@ namespace VoxelMapConverter
                         int ceilingBlockCount = (number_4_byte_chunks - 1) - surfaceBlockCount;
                         int ceiling_color_end = AoSMapData[spanStart + number_4_byte_chunks * 4 + 3]; //Read next span air start;
                         int ceiling_color_start = ceiling_color_end - ceilingBlockCount;
-                        z = IMSizeZ - ceiling_color_start - 1; //Jump down to top of bottom blocks
+                        z = mapHeight - ceiling_color_start - 1; //Jump down to top of bottom blocks
                         //Continue from previous set of data bytes
                         for(int j = i; j < i + ceilingBlockCount; j++)
                         {
@@ -95,7 +95,6 @@ namespace VoxelMapConverter
                 Console.Write("|");
             }
 
-            mapResult.groundHeight = groundHeight;
             Console.WriteLine("");
             return mapResult;
         }
@@ -104,7 +103,7 @@ namespace VoxelMapConverter
         {
             //Go through each column
             int columnStart = 0;
-            int groundHeight = IMSizeZ; //Start at the highest value so first column Z will be smaller 
+            int groundHeight = 256; //Start at the highest value so first column Z will be smaller 
             for (int x = 0; x < aosSizeX; x++)
             {
                 for (int y = 0; y < aosSizeY; y++)
@@ -127,7 +126,7 @@ namespace VoxelMapConverter
                             int surfaceBlockCount = top_color_end - top_color_start + 1;
 
                             //Value where z = 0 is the bottom of the map
-                            int top_color_switched = IMSizeZ - top_color_start - 1;
+                            int top_color_switched = 256 - top_color_start - 1;
 
                             int z = top_color_switched;
                             z -= surfaceBlockCount;

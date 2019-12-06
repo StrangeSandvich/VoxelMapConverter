@@ -7,9 +7,6 @@ namespace VoxelMapConverter
 {
     class Palette
     {
-
-        public int approximation;
-
         //Please don't shuffle around your indexes
         public List<RGBColor> palette = new List<RGBColor>();
         public List<int> indexCount = new List<int>(); //Keep track of how many blocks use one color. 

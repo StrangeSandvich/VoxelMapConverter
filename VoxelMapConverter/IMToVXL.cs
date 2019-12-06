@@ -35,7 +35,7 @@ namespace VoxelMapConverter
             int modelID = 0;
 
             //Seperate the world into 64x64x64 regions that become a model each
-            int mapheight = 256 - map.groundHeight;
+            int mapheight = map.sizeZ;
             for (int x = 0; x < 512; x+= 64)
             {
                 Console.Write("|");

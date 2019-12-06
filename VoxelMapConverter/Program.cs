@@ -30,7 +30,7 @@ namespace VoxelMapConverter
             Console.WriteLine("Alright, here I go parsing the Ace of Spades map. This might take a few seconds...");
             IntermediateMap map = AceOfSpadesToIM.ToIntermediateMap(AoSMapData, keepOcean);
             int colorCount = map.palette.palette.Count; //Should really have internal functions to do this but eh. 
-            Console.WriteLine("Parsing went well. Map height detected to be " + (256 - map.groundHeight) + " with " + colorCount + " unique colors");
+            Console.WriteLine("Parsing went well. Map height detected to be " + map.sizeZ + " with " + colorCount + " unique colors");
             Console.WriteLine("How many colors should the map have? Magicavoxel supports a maximum of 255. Enter nothing for maximum colors.");
             int colorInput = ReadInt(2, 255);
             if(colorInput < colorCount)
