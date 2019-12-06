@@ -28,9 +28,9 @@ Tell the program if you want it to keep the ocean blocks (Sectors edge will not 
 
 Let the program parse the map.
 
-Give the program the name of the output file. Leave empty to use input name for output name.
+If the map has more than 255 colors the program will need to condense them. 
 
-Give the program a color approximation level between 0 and 41. Try to find the lowest value that doesn't cause the program to run out of colors.
+Give the program the name of the output file. Leave empty to use input name for output name.
 
 Let the program write the .vox file.
 

@@ -16,7 +16,7 @@ namespace VoxelMapConverter
 
         public Palette()
         {
-            palette.Add(new RGBColor(0,0,0));
+            palette.Add(new RGBColor(0,0,0, true));
             indexCount.Add(0);
         }
 
@@ -52,7 +52,7 @@ namespace VoxelMapConverter
 
         public int[,] CalculateDistanceForIndex(int index, int[,] distances)
         {
-            for(int i = 0; i < distances.GetLength(0); i++)
+            for(int i = 1; i < distances.GetLength(0); i++)
             {
                 int difference;
                 if(i == index)
@@ -68,18 +68,19 @@ namespace VoxelMapConverter
             return distances;
         }
 
+        //Find the index pair with the smallest distance. Can be optimized
         public (int, int) SmallestDistance(int[,] distances, List<int> resultList)
         {
-            int smalli = 0;
-            int smallj = 0;
+            int smalli = 1;
+            int smallj = 2;
             int smallValue = int.MaxValue;
-            for (int i = 0; i < resultList.Count; i++)
+            for (int i = 1; i < resultList.Count; i++)
             {
                 if(resultList[i] != i) //Index no longer in use
                 {
                     continue;
                 }
-                for(int j = 0; j < resultList.Count; j++)
+                for(int j = 1; j < resultList.Count; j++)
                 {
                     if (resultList[j] != j) //Index no longer in use
                     {
@@ -107,10 +108,10 @@ namespace VoxelMapConverter
                 resultList.Add(i);
             }
             int[,] distances = new int[paletteCount, paletteCount];
-            //Find all distances
-            for(int i = 0; i < paletteCount; i++)
+            //Find all distances, except to index 0
+            for(int i = 1; i < paletteCount; i++)
             {
-                for(int j = 0; j < paletteCount; j++)
+                for(int j = 1; j < paletteCount; j++)
                 {
                     if(i == j)
                     {

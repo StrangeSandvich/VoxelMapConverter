@@ -9,12 +9,22 @@ namespace VoxelMapConverter
         public byte red { get; set; }
         public byte green { get; set; }
         public byte blue { get; set; }
+        public bool uncomparable { get; set; }
 
         public RGBColor(byte red, byte green, byte blue)
         {
             this.red = red;
             this.green = green;
             this.blue = blue;
+            this.uncomparable = false;
+        }
+
+        public RGBColor(byte red, byte green, byte blue, bool uncomparable)
+        {
+            this.red = red;
+            this.green = green;
+            this.blue = blue;
+            this.uncomparable = uncomparable;
         }
 
         public RGBColor(int red, int green, int blue)
@@ -22,10 +32,12 @@ namespace VoxelMapConverter
             this.red = Convert.ToByte(red);
             this.green = Convert.ToByte(green);
             this.blue = Convert.ToByte(blue);
+            this.uncomparable = false;
         }
 
         public RGBColor(string input)
         {
+            this.uncomparable = false;
             List<string> split = new List<string>(input.Split(' '));
             if(split.Count == 3)
             {
@@ -92,6 +104,10 @@ namespace VoxelMapConverter
 
         public bool Compare(RGBColor other)
         {
+            if (uncomparable)
+            {
+                return false;
+            }
             return Difference(other) < 15;
         }
 

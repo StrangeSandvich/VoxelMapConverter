@@ -33,11 +33,12 @@ namespace VoxelMapConverter
             Console.WriteLine("Parsing went well. Map height detected to be " + (256 - map.groundHeight) + " with " + colorCount + " unique colors");
             if(colorCount > 255)
             {
+                /*
                 Console.WriteLine("Howver Magicavoxel can only handle 255 unique colors. And you might not even want that many colors anyway.");
                 Console.WriteLine("I'll condense the colors together by combining the closest colors. How many different colors do you want? (Between 1 and 255):");
-                int colorInput = ReadInt(1, 255);
-                Console.WriteLine("Condensing colors...");
-                map.PaletteShrink(colorInput);
+                int colorInput = ReadInt(1, 255);*/
+                Console.WriteLine("Condensing colors. This might take a second...");
+                map.PaletteShrink(255);
                 Console.WriteLine("Shrunk colors.");
             }
             Console.WriteLine("Now I just need to write it to a vox file.");

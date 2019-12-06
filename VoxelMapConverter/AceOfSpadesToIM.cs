@@ -18,7 +18,11 @@ namespace VoxelMapConverter
             
             //Go through each column
             int columnStart = 0;
-            int groundHeight = IMSizeZ; //Start at the highest value so first column Z will be smaller 
+            int groundHeight = GroundHeight(AoSMapData);
+            if (!keepOcean)
+            {
+                groundHeight++;
+            }
             Block airBlock = new Block(Block.AIR, palette);
             for (int x = 0; x < aosSizeX; x++)
             {
@@ -46,6 +50,10 @@ namespace VoxelMapConverter
                         //Surface/top run
                         for(i = 0; i < surfaceBlockCount; i++)
                         {
+                            if(z < groundHeight)
+                            {
+                                break;
+                            }
                             int blue = AoSMapData[spanStart + 4 + i * 4];
                             int green = AoSMapData[spanStart + 5 + i * 4];
                             int red = AoSMapData[spanStart + 6 + i * 4];
@@ -55,8 +63,7 @@ namespace VoxelMapConverter
 
                         if(number_4_byte_chunks == 0) //Last span of column
                         {
-                            //Update if this column was the highest. 
-                            groundHeight = Math.Min(groundHeight, z);
+                            //Update if this column was the highest.
                             //Rest of the column is already solid, leave it
                             //Next column is past first 4 span bytes and then past the number of surface blocks * the four bytes one of those takes
                             columnStart = spanStart + 4 + 4 * surfaceBlockCount;
@@ -86,15 +93,54 @@ namespace VoxelMapConverter
                 }
             }
 
-            if (keepOcean)
-            {
-                mapResult.groundHeight = groundHeight + 1;
-            } else
-            {
-                mapResult.groundHeight = groundHeight + 2;
-            }
+            mapResult.groundHeight = groundHeight;            
 
             return mapResult;
+        }
+
+        public static int GroundHeight(byte[] AoSMapData)
+        {
+            //Go through each column
+            int columnStart = 0;
+            int groundHeight = IMSizeZ; //Start at the highest value so first column Z will be smaller 
+            for (int x = 0; x < aosSizeX; x++)
+            {
+                for (int y = 0; y < aosSizeY; y++)
+                {
+                    int spanStart = columnStart;
+                    while (true)
+                    {
+                        //Read span metadata
+                        int number_4_byte_chunks = (int)AoSMapData[spanStart];
+
+                        if (number_4_byte_chunks != 0)
+                        {
+                            //Set spanstart to next span
+                            spanStart += 4 * number_4_byte_chunks;
+                        }
+                        else
+                        {
+                            int top_color_start = (int)AoSMapData[spanStart + 1];
+                            int top_color_end = (int)AoSMapData[spanStart + 2]; //Inclusive
+                            int surfaceBlockCount = top_color_end - top_color_start + 1;
+
+                            //Value where z = 0 is the bottom of the map
+                            int top_color_switched = IMSizeZ - top_color_start - 1;
+
+                            int z = top_color_switched;
+                            z -= surfaceBlockCount;
+                            //Update if this column was the highest. 
+                            groundHeight = Math.Min(groundHeight, z);
+                            //Rest of the column is already solid, leave it
+                            //Next column is past first 4 span bytes and then past the number of surface blocks * the four bytes one of those takes
+                            columnStart = spanStart + 4 + 4 * surfaceBlockCount;
+                            break;
+
+                        }
+                    }
+                }
+            }
+            return groundHeight + 1;
         }
     }
 }
