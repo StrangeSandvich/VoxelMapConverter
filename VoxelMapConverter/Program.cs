@@ -31,14 +31,12 @@ namespace VoxelMapConverter
             IntermediateMap map = AceOfSpadesToIM.ToIntermediateMap(AoSMapData, keepOcean);
             int colorCount = map.palette.palette.Count; //Should really have internal functions to do this but eh. 
             Console.WriteLine("Parsing went well. Map height detected to be " + (256 - map.groundHeight) + " with " + colorCount + " unique colors");
-            if(colorCount > 255)
+            Console.WriteLine("How many colors should the map have? Magicavoxel supports a maximum of 255. Enter nothing for maximum colors.");
+            int colorInput = ReadInt(2, 255);
+            if(colorInput < colorCount)
             {
-                /*
-                Console.WriteLine("Howver Magicavoxel can only handle 255 unique colors. And you might not even want that many colors anyway.");
-                Console.WriteLine("I'll condense the colors together by combining the closest colors. How many different colors do you want? (Between 1 and 255):");
-                int colorInput = ReadInt(1, 255);*/
                 Console.WriteLine("Condensing colors. This might take a second...");
-                map.PaletteShrink(255);
+                map.PaletteShrink(colorInput);
                 Console.WriteLine("Shrunk colors.");
             }
             Console.WriteLine("Now I just need to write it to a vox file.");
@@ -61,7 +59,12 @@ namespace VoxelMapConverter
             {
                 try
                 {
-                    int res = int.Parse(Console.ReadLine());
+                    string input = Console.ReadLine();
+                    if(input == "")
+                    {
+                        return max;
+                    }
+                    int res = int.Parse(input);
                     if(res > max)
                     {
                         Console.WriteLine("That number is too high. It must at most be " + max + ". Try again");
