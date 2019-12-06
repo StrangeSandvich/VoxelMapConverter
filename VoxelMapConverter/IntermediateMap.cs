@@ -68,7 +68,6 @@ namespace VoxelMapConverter
                             continue;
                         }//Else
                         block.colorIndex = reIndexingList[block.colorIndex];
-                        
                     }
                 }
                 if (x % 64 == 0)

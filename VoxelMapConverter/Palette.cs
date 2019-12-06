@@ -7,6 +7,9 @@ namespace VoxelMapConverter
 {
     class Palette
     {
+        //REMEMBER TO SUBTRACT 1. ADDS 1 LATER BECAUSE MAGICAVOXEL INDICES FROM !
+        public static List<int> reservedIDs = new List<int>(new int[]{0, 8, 16, 17 }); //This info could use an update
+
         //Please don't shuffle around your indexes
         public List<RGBColor> palette = new List<RGBColor>();
         public List<int> indexCount = new List<int>(); //Keep track of how many blocks use one color. 
@@ -139,6 +142,7 @@ namespace VoxelMapConverter
                     }
                 }
             }
+            //Now all indexes in the resultlist point directly to a valid colorindex
             for (int i = 0; i < palette.Count; i++)
             {
                 if (resultList[i] == i) //Index is valid endpoint
@@ -150,6 +154,22 @@ namespace VoxelMapConverter
                     resultList[i] = resultList[resultList[i]];
                 }
             }
+            foreach (int reservedID in reservedIDs)
+            {
+                int replacementID = newPalette.Count;
+                newPalette.Add(newPalette[reservedID]);
+                resultList[reservedID] = replacementID;
+                newPalette[reservedID] = new RGBColor(0, 0, 0);
+            }
+            for(int i = 0; i < resultList.Count; i++)
+            {
+                int index = resultList[i];
+                if (reservedIDs.Contains(index))
+                {
+                    resultList[i] = resultList[index]; //Forward to the replacement ID
+                }
+            }
+
             //Write in the new condensed palette and return the resultlist for the map to update block indexes
             palette = newPalette;
             return resultList;
@@ -168,7 +188,7 @@ namespace VoxelMapConverter
                 resultChunk.addData(new ByteChunkData(color.blue));
                 resultChunk.addData(new ByteChunkData(255)); //Magicavoxel doesn't seem to use this, but keeps all of them at 255
             }
-            for(int i = 0; i < 255-palette.Count; i++)
+            for(int i = palette.Count; i < 256; i++)
             {
                 //Add completely white pixels to the rest of the palette
                 resultChunk.addData(new ByteChunkData(255));

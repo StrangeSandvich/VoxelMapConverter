@@ -1,7 +1,8 @@
 Todo and wishlist:
 
 Nicer way to display progress
-Avoid palette ID's that Sectors Edge uses for special things
+Update reserved indexes after asking Verc
+Make it so the reservedID shuffle works when number of colors is chosen to be less than the highest reserved id
 
 Bigger things:
 Functionality to merge color indexes of existing magicavoxel maps

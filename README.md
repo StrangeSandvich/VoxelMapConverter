@@ -27,10 +27,13 @@ Tell the program if you want it to keep the ocean blocks (Sector's Edge will not
 
 Let the program parse the map.
 
-Choose how many unique colors the map should keep. Can maximum be 255 due to MagicaVoxel limitations.
+Choose how many unique colors the map should keep. Can maximum be 251 due to MagicaVoxel limitations.
 
 Give the program the name of the output file. Leave empty to use input name for output name.
 
 Let the program write the .vox file.
 
 Find the output file next to the program when done. 
+
+Note that Ace of Spades maps have a bunch of "solid" blocks that it doesn't store color for. All these blocks are given color index 1 and can be changed in MagicaVoxel.
+Sectors Edge has a number of block indexes that are reserved for special purposes. As of right now those indexes are 9, 17 and 18 and they are not used. 
