@@ -14,11 +14,12 @@ namespace VoxelMapConverter
         public static IntermediateMap ToIntermediateMap(byte[] AoSMapData, bool keepOcean)
         {
             IntermediateMap mapResult = new IntermediateMap(aosSizeX, aosSizeY, IMSizeZ, Block.AOSSOLID);
+            Palette palette = mapResult.palette;
             
             //Go through each column
             int columnStart = 0;
             int groundHeight = IMSizeZ; //Start at the highest value so first column Z will be smaller 
-            Block airBlock = new Block(Block.AIR);
+            Block airBlock = new Block(Block.AIR, palette);
             for (int x = 0; x < aosSizeX; x++)
             {
                 for (int y = 0; y < aosSizeY; y++)
@@ -33,10 +34,9 @@ namespace VoxelMapConverter
                         int top_color_end = (int)AoSMapData[spanStart + 2]; //Inclusive
                         int surfaceBlockCount = top_color_end - top_color_start + 1;
                         int i; //Offset into data bytes
-                        int top_color_switched;
                         
                         //Value where z = 0 is the bottom of the map
-                        top_color_switched = IMSizeZ - top_color_start - 1;
+                        int top_color_switched = IMSizeZ - top_color_start - 1;
 
                         //Air run. Start at the latest z and go down to top_color_start
                         for (/*Use z*/; z > top_color_switched; z--){
@@ -49,7 +49,7 @@ namespace VoxelMapConverter
                             int blue = AoSMapData[spanStart + 4 + i * 4];
                             int green = AoSMapData[spanStart + 5 + i * 4];
                             int red = AoSMapData[spanStart + 6 + i * 4];
-                            mapResult.setBlockAt(x, y, z, new Block(new RGBColor(red, green, blue)));
+                            mapResult.setBlockAt(x, y, z, new Block(palette, new RGBColor(red, green, blue)));
                             z--;
                         }
 
@@ -69,13 +69,14 @@ namespace VoxelMapConverter
                         int ceilingBlockCount = (number_4_byte_chunks - 1) - surfaceBlockCount;
                         int ceiling_color_end = AoSMapData[spanStart + number_4_byte_chunks * 4 + 3]; //Read next span air start;
                         int ceiling_color_start = ceiling_color_end - ceilingBlockCount;
-                        z = IMSizeZ - ceiling_color_start - 1;
+                        z = IMSizeZ - ceiling_color_start - 1; //Jump down to top of bottom blocks
+                        //Continue from previous set of data bytes
                         for(int j = i; j < i + ceilingBlockCount; j++)
                         {
                             int blue = AoSMapData[spanStart + 4 + j * 4];
                             int green = AoSMapData[spanStart + 5 + j * 4];
                             int red = AoSMapData[spanStart + 6 + j * 4];
-                            mapResult.setBlockAt(x, y, z, new Block(new RGBColor(red, green, blue)));
+                            mapResult.setBlockAt(x, y, z, new Block(palette, new RGBColor(red, green, blue)));
                             z--;
                         }
 
@@ -92,8 +93,6 @@ namespace VoxelMapConverter
             {
                 mapResult.groundHeight = groundHeight + 2;
             }
-
-            Console.WriteLine("Groundheight is " + groundHeight);
 
             return mapResult;
         }

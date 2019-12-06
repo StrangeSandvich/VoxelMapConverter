@@ -10,7 +10,7 @@ namespace VoxelMapConverter
         public static int nodeID;
         public static List<int> IDForGroup;
 
-        public static void IMToVoxel(IntermediateMap map, int colorApproximation, string outfileName)
+        public static void IMToVoxel(IntermediateMap map, string outfileName)
         {
             FileStream stream = new FileStream(outfileName, FileMode.Create, FileAccess.Write,
                 FileShare.Write);
@@ -25,8 +25,7 @@ namespace VoxelMapConverter
             //List of chunks
             List<RiffChunk> chunks = new List<RiffChunk>();
 
-            //Palette of colors
-            Palette palette = new Palette(colorApproximation);
+            Palette palette = map.palette;
 
             //Setup for staging nodes
             resetNodeID();
@@ -69,7 +68,8 @@ namespace VoxelMapConverter
                         xyzi.addData(new IntChunkData(voxels.Count));
                         foreach (Voxel voxel in voxels)
                         {
-                            int colorIndex = palette.getColorIndex(voxel.color);
+                            //Remember that magicavoxel index starts at 1
+                            int colorIndex = voxel.colorIndex+1;
                             try
                             {
                                 xyzi.addData(new VoxelChunkData(Convert.ToByte(voxel.x-x), Convert.ToByte(voxel.y-y), Convert.ToByte(voxel.z-z), Convert.ToByte(colorIndex)));

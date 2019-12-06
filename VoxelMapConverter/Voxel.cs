@@ -7,14 +7,14 @@ namespace VoxelMapConverter
     class Voxel
     {
         public int x, y, z;
-        public RGBColor color { get; set; }
+        public int colorIndex;
 
-        public Voxel(int x, int y, int z, RGBColor color)
+        public Voxel(int x, int y, int z, int colorIndex)
         {
             this.x = x;
             this.y = y;
             this.z = z;
-            this.color = color;
+            this.colorIndex = colorIndex;
         }
 
         public Voxel(int x, int y, int z, Block block)
@@ -22,7 +22,7 @@ namespace VoxelMapConverter
             this.x = x;
             this.y = y;
             this.z = z;
-            this.color = block.color;
+            this.colorIndex = block.colorIndex;
         }
     }
 }

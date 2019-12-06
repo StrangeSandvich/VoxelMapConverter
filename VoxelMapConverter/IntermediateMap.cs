@@ -11,6 +11,7 @@ namespace VoxelMapConverter
         private Block[,,] mapXYZI;
         public int groundHeight { get; set; }
         public Block fillBlock;
+        public Palette palette { get; }
 
         public IntermediateMap(int sizeX, int sizeY, int sizeZ, int filltype)
         {
@@ -18,7 +19,8 @@ namespace VoxelMapConverter
             this.sizeY = sizeY;
             this.sizeZ = sizeZ;
             this.groundHeight = 0;
-            this.fillBlock = new Block(filltype);
+            this.palette = new Palette();
+            this.fillBlock = new Block(filltype, palette);
 
             mapXYZI = new Block[sizeX, sizeY, sizeZ];
             //Leave all values in the array null. If asked for, the function will give the fillblock. 
@@ -45,6 +47,34 @@ namespace VoxelMapConverter
             mapXYZI[x,y,z+groundHeight] = block;
         }
 
+        //Reduce number of colors in palette to count 
+        public void PaletteShrink(int count)
+        {
+            //Make the palette shrink, have it give the new index values
+            List<int> reIndexingList = palette.PaletteShrink(count);
+            //Update the color index of every block
+            for (int x = 0; x < sizeX; x++)
+            {
+                for(int y = 0; y < sizeY; y++)
+                {
+                    for(int z = groundHeight; z < sizeZ; z++)
+                    {
+                        Block block = mapXYZI[x, y, z];
+                        //Don't bother with air, fill or solid blocks
+                        if(block == null)
+                        {
+                            continue;
+                        } else if(block.ID < 0) //Block is air or something
+                        {
+                            continue;
+                        }//Else
+                        block.colorIndex = reIndexingList[block.colorIndex];
+                        
+                    }
+                }
+            }
+        }
+
         public List<Voxel> getListOfVoxels(int lowx, int highx, int lowy, int highy, int lowz, int highz)
         {
             List<Voxel> resultList = new List<Voxel>();
@@ -57,7 +87,7 @@ namespace VoxelMapConverter
                         Block block = getBlockAt(x, y, z);
                         if (block.ID != Block.AIR)
                         {
-                            resultList.Add(new Voxel(x, y, z, block.color));
+                            resultList.Add(new Voxel(x, y, z, block));
                         }
                     }
                 }

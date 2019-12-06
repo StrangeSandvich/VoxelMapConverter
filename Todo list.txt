@@ -1,12 +1,13 @@
 Todo and wishlist:
 
-Better color approximation and reducer
-Functionality to merge color indexes
+Functionality to ignore ocean colors on palette
 Functionality to add additional ground layers for maps without open ocean. 
+Functionality to show progress without spamming the console
 Avoid palette ID's that Sectors Edge uses for special things
-Give underground solid color a seperate color index which can then be set in MagicaVoxel
-Make sure color approximation doesn't approximate onto index 1 or 2
+Make sure color approximation doesn't approximate onto index 1
 
+Bigger things:
+Functionality to merge color indexes of existing magicavoxel maps
 Convert BlockNLoad maps
 Convert Minecraft Schematics
 (Use Timothees stuff)

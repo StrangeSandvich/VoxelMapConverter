@@ -29,22 +29,54 @@ namespace VoxelMapConverter
             bool keepOcean = ReadBool();
             Console.WriteLine("Alright, here I go parsing the Ace of Spades map. This might take a few seconds...");
             IntermediateMap map = AceOfSpadesToIM.ToIntermediateMap(AoSMapData, keepOcean);
-            Console.WriteLine("Parsing went well! Now I just need to write it to a vox file.");
+            int colorCount = map.palette.palette.Count; //Should really have internal functions to do this but eh. 
+            Console.WriteLine("Parsing went well. Map height detected to be " + (256 - map.groundHeight) + " with " + colorCount + " unique colors");
+            if(colorCount > 255)
+            {
+                Console.WriteLine("Howver Magicavoxel can only handle 255 unique colors. And you might not even want that many colors anyway.");
+                Console.WriteLine("I'll condense the colors together by combining the closest colors. How many different colors do you want? (Between 1 and 255):");
+                int colorInput = ReadInt(1, 255);
+                Console.WriteLine("Condensing colors...");
+                map.PaletteShrink(colorInput);
+                Console.WriteLine("Shrunk colors.");
+            }
+            Console.WriteLine("Now I just need to write it to a vox file.");
             Console.WriteLine("What do you want me to call the output file (Excluding the .vox). Input nothing to use the name of the input map:");
             string outname = Console.ReadLine();
             if (outname == "")
             {
                 outname = mapinput;
             }
-            Console.WriteLine("However, a vox file can only have 255 different colours and an AoS map can easily have more. Therefore I will likely need to combine some colors.");
-            Console.WriteLine("Please input the level of color approximation I should go for. 0 will make a new color for every AoS color, but if I run out I will just make all remaining colors black.");
-            Console.WriteLine("I'll warn you if I run out though. Give me a number between 0 and 41:");
-            int colorApprox = ReadInt();
             Console.WriteLine("Alright, I'll try write the vox file with that. Might take a couple of seconds...");
-            IMToVXL.IMToVoxel(map, colorApprox, outname + ".vox");
+            IMToVXL.IMToVoxel(map, outname + ".vox");
             Console.WriteLine("There we are. There should now be a nice " + outname + ".vox with your map :)");
             Console.WriteLine("Press enter to close");
             Console.ReadLine();
+        }
+
+        static int ReadInt(int min, int max)
+        {
+            while(true)
+            {
+                try
+                {
+                    int res = int.Parse(Console.ReadLine());
+                    if(res > max)
+                    {
+                        Console.WriteLine("That number is too high. It must at most be " + max + ". Try again");
+                    }
+                    else if (res < min) {
+                        Console.WriteLine("That number is too small. It must at least be " + min + ". Try again");
+                    }
+                    else
+                    {
+                        return res;
+                    }
+                } catch (Exception)
+                {
+                    Console.WriteLine("That did not seem like a number. Try again:");
+                }
+            }
         }
 
         static int ReadInt()
