@@ -17,23 +17,6 @@ namespace VoxelMapConverter
             indexCount.Add(0);
         }
 
-        /*
-        public int getColorIndex(RGBColor color)
-        {
-            int index = palette.FindIndex(x => x.Appoximate(approximation, color));
-            if(index != -1)
-            {
-                return index+1;
-            }
-            if(palette.Count >= 255)
-            {
-                Console.WriteLine("Warning: Ran out of color indexes. Printing color black.");
-                return 1;
-            }
-            palette.Add(color);
-            return palette.Count; //Index+1 of new insert
-        }*/
-
         public int getExactColorIndex(RGBColor color)
         {
             int index = palette.FindIndex(x => x.Compare(color));
@@ -138,7 +121,10 @@ namespace VoxelMapConverter
                 distances = CalculateDistanceForIndex(smallest, distances);
                 //Lower paletteCount
                 paletteCount--;
-                Console.Write("|");
+                if(paletteCount % 3 == 0)
+                {
+                    Console.Write("|");
+                }
             }
             //Now there is at most count palette colors. We now have to condense the indexes so they go from 0 to count
 

@@ -51,7 +51,7 @@ namespace VoxelMapConverter
                         //Surface/top run
                         for(i = 0; i < surfaceBlockCount; i++)
                         {
-                            if(z < groundHeight)
+                            if(z < 0)
                             {
                                 break;
                             }

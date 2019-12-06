@@ -2,7 +2,6 @@ Todo and wishlist:
 
 Nicer way to display progress
 Avoid palette ID's that Sectors Edge uses for special things
-Optimizes to use the found mapheight to not use excess space
 
 Bigger things:
 Functionality to merge color indexes of existing magicavoxel maps
