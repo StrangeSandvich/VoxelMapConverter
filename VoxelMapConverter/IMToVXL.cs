@@ -38,6 +38,7 @@ namespace VoxelMapConverter
             int mapheight = 256 - map.groundHeight;
             for (int x = 0; x < 512; x+= 64)
             {
+                Console.Write("|");
                 for(int y = 0; y < 512; y += 64)
                 {
                     for(int z = 0; z < mapheight+64; z += 64) //Map may not be that high, but getListOfVoxels will just return nothing for out of bounds values. 
@@ -139,15 +140,18 @@ namespace VoxelMapConverter
             }
             writer.Write(mainChunkChildDataSize);
 
+            Console.Write("|");
             //Write all those chunks
             foreach (RiffChunk chunk in chunks)
             {
                 chunk.writeChunk(writer);
             }
+            Console.Write("|");
 
             //Done
             writer.Close();
             stream.Close();
+            Console.WriteLine("");
         }
 
         //We don't use the layer chunks. All objects are layer 1

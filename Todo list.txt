@@ -1,6 +1,6 @@
 Todo and wishlist:
 
-Functionality to show progress without spamming the console
+Nicer way to display progress
 Avoid palette ID's that Sectors Edge uses for special things
 Optimizes to use the found mapheight to not use excess space
 

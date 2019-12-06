@@ -23,6 +23,7 @@ namespace VoxelMapConverter
             {
                 groundHeight++;
             }
+            int mapHeight = 256 - groundHeight;
             Block airBlock = new Block(Block.AIR, palette);
             for (int x = 0; x < aosSizeX; x++)
             {
@@ -91,10 +92,11 @@ namespace VoxelMapConverter
                         spanStart += 4 * number_4_byte_chunks;
                     }
                 }
+                Console.Write("|");
             }
 
-            mapResult.groundHeight = groundHeight;            
-
+            mapResult.groundHeight = groundHeight;
+            Console.WriteLine("");
             return mapResult;
         }
 

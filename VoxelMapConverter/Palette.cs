@@ -141,6 +141,7 @@ namespace VoxelMapConverter
                 distances = CalculateDistanceForIndex(smallest, distances);
                 //Lower paletteCount
                 paletteCount--;
+                Console.Write("|");
             }
             //Now there is at most count palette colors. We now have to condense the indexes so they go from 0 to count
 

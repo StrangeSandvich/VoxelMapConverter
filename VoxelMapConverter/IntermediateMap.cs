@@ -52,6 +52,7 @@ namespace VoxelMapConverter
         {
             //Make the palette shrink, have it give the new index values
             List<int> reIndexingList = palette.PaletteShrink(count);
+
             //Update the color index of every block
             for (int x = 0; x < sizeX; x++)
             {
@@ -72,7 +73,12 @@ namespace VoxelMapConverter
                         
                     }
                 }
+                if (x % 64 == 0)
+                {
+                    Console.Write("|");
+                }
             }
+            Console.WriteLine("");
         }
 
         public List<Voxel> getListOfVoxels(int lowx, int highx, int lowy, int highy, int lowz, int highz)
