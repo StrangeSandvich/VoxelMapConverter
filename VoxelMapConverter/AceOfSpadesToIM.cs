@@ -17,12 +17,14 @@ namespace VoxelMapConverter
             //Go through each column
             int columnStart = 0;
             int groundHeight = GroundHeight(AoSMapData);
+            List<RGBColor> oceanColors = new List<RGBColor>();
+            int finalHeight = 256 - groundHeight;
             if (!keepOcean)
             {
-                groundHeight++;
+                finalHeight--;
             }
-            int mapHeight = 256 - groundHeight;
-            IntermediateMap mapResult = new IntermediateMap(aosSizeX, aosSizeY, mapHeight, Block.AOSSOLID);
+            IntermediateMap mapResult;
+            mapResult = new IntermediateMap(aosSizeX, aosSizeY, finalHeight, Block.AOSSOLID);
             Palette palette = mapResult.palette;
             Block airBlock = new Block(Block.AIR, palette);
             for (int x = 0; x < aosSizeX; x++)
@@ -30,7 +32,7 @@ namespace VoxelMapConverter
                 for (int y = 0; y < aosSizeY; y++)
                 {
                     int spanStart = columnStart;
-                    int z = mapHeight - 1;
+                    int z = finalHeight - 1;
                     while (true)
                     {
                         //Read span metadata
@@ -41,7 +43,7 @@ namespace VoxelMapConverter
                         int i; //Offset into data bytes
                         
                         //Value where z = 0 is the bottom of the map
-                        int top_color_switched = mapHeight - top_color_start - 1;
+                        int top_color_switched = finalHeight - top_color_start - 1;
 
                         //Air run. Start at the latest z and go down to top_color_start
                         for (/*Use z*/; z > top_color_switched; z--){
@@ -51,14 +53,21 @@ namespace VoxelMapConverter
                         //Surface/top run
                         for(i = 0; i < surfaceBlockCount; i++)
                         {
-                            if(z < 0)
-                            {
-                                break;
-                            }
                             int blue = AoSMapData[spanStart + 4 + i * 4];
                             int green = AoSMapData[spanStart + 5 + i * 4];
                             int red = AoSMapData[spanStart + 6 + i * 4];
-                            mapResult.setBlockAt(x, y, z, new Block(palette, new RGBColor(red, green, blue)));
+                            RGBColor color = new RGBColor(red, green, blue);
+                            if(z < 0)
+                            {
+                                oceanColors.Add(color);
+                                break;
+                            }
+                            mapResult.setBlockAt(x, y, z, new Block(palette, color));
+                            if (z == 0 && keepOcean) //Ocean height
+                            {
+                                oceanColors.Add(color);
+                                break;
+                            } 
                             z--;
                         }
 
@@ -77,7 +86,7 @@ namespace VoxelMapConverter
                         int ceilingBlockCount = (number_4_byte_chunks - 1) - surfaceBlockCount;
                         int ceiling_color_end = AoSMapData[spanStart + number_4_byte_chunks * 4 + 3]; //Read next span air start;
                         int ceiling_color_start = ceiling_color_end - ceilingBlockCount;
-                        z = mapHeight - ceiling_color_start - 1; //Jump down to top of bottom blocks
+                        z = finalHeight - ceiling_color_start - 1; //Jump down to top of bottom blocks
                         //Continue from previous set of data bytes
                         for(int j = i; j < i + ceilingBlockCount; j++)
                         {
@@ -94,6 +103,9 @@ namespace VoxelMapConverter
                 }
                 Console.Write("|");
             }
+
+            RGBColor finalOcean = RGBColor.Combine(oceanColors);
+            mapResult.oceanColor = finalOcean;
 
             Console.WriteLine("");
             return mapResult;

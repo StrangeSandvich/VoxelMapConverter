@@ -29,9 +29,11 @@ Let the program parse the map.
 
 Choose how many unique colors the map should keep. Can maximum be 251 due to MagicaVoxel limitations.
 
-Give the program the name of the output file. Leave empty to use input name for output name.
+Give the program the name of the output file. Leave empty to place it directly where Sectors Edge loads it for the ship.
 
 Let the program write the .vox file.
+
+Tell the program if you want it to generate a template map.txt file for Sectors Edge specific configuration. 
 
 Find the output file next to the program when done. 
 

@@ -11,6 +11,7 @@ namespace VoxelMapConverter
         private Block[,,] mapXYZI;
         public Block fillBlock;
         public Palette palette { get; }
+        public RGBColor oceanColor { set; get; }
 
         public IntermediateMap(int sizeX, int sizeY, int sizeZ, int filltype)
         {
@@ -19,6 +20,7 @@ namespace VoxelMapConverter
             this.sizeZ = sizeZ;
             this.palette = new Palette();
             this.fillBlock = new Block(filltype, palette);
+            this.oceanColor = new RGBColor(58, 58, 46);
 
             mapXYZI = new Block[sizeX, sizeY, sizeZ];
             //Leave all values in the array null. If asked for, the function will give the fillblock. 

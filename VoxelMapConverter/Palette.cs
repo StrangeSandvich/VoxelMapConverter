@@ -7,15 +7,17 @@ namespace VoxelMapConverter
 {
     class Palette
     {
-        //REMEMBER TO SUBTRACT 1. ADDS 1 LATER BECAUSE MAGICAVOXEL INDICES FROM !
-        public static List<int> reservedIDs = new List<int>(new int[]{0, 8, 16, 17 }); //This info could use an update
+        //REMEMBER TO SUBTRACT 1. ADDS 1 LATER BECAUSE MAGICAVOXEL INDICES FROM 1
+        public static List<int> reservedIDs = new List<int>(new int[]{8, 16, 17 });
 
         //Please don't shuffle around your indexes
         public List<RGBColor> palette = new List<RGBColor>();
         public List<int> indexCount = new List<int>(); //Keep track of how many blocks use one color. 
+        public List<int> fillerIndexes = new List<int>();
 
         public Palette()
         {
+            //Solid ground color
             palette.Add(new RGBColor(0,0,0, true));
             indexCount.Add(0);
         }
@@ -105,7 +107,7 @@ namespace VoxelMapConverter
                     }
                 }
             }
-            while(paletteCount > count)
+            while(paletteCount > count+1) //+1 for solid index
             {
                 //Find indexes with smallest distance
                 (int, int) combining = SmallestDistance(distances, resultList);
@@ -131,6 +133,7 @@ namespace VoxelMapConverter
             }
             //Now there is at most count palette colors. We now have to condense the indexes so they go from 0 to count
 
+            //Get all indexes to point directly at a valid endpoint
             List<RGBColor> newPalette = new List<RGBColor>();
             for(int i = 0; i < palette.Count; i++)
             {
@@ -156,10 +159,22 @@ namespace VoxelMapConverter
             }
             foreach (int reservedID in reservedIDs)
             {
-                int replacementID = newPalette.Count;
-                newPalette.Add(newPalette[reservedID]);
-                resultList[reservedID] = replacementID;
-                newPalette[reservedID] = new RGBColor(0, 0, 0);
+                if(reservedID >= newPalette.Count)
+                {
+                    while(reservedID != newPalette.Count)
+                    {
+                        fillerIndexes.Add(newPalette.Count);
+                        newPalette.Add(new RGBColor(0, 0, 0));
+
+                    }
+                    newPalette.Add(new RGBColor(0, 0, 0));
+                } else
+                {
+                    int replacementID = newPalette.Count;
+                    newPalette.Add(newPalette[reservedID]);
+                    resultList[reservedID] = replacementID;
+                    newPalette[reservedID] = new RGBColor(0, 0, 0);
+                }
             }
             for(int i = 0; i < resultList.Count; i++)
             {
@@ -188,7 +203,7 @@ namespace VoxelMapConverter
                 resultChunk.addData(new ByteChunkData(color.blue));
                 resultChunk.addData(new ByteChunkData(255)); //Magicavoxel doesn't seem to use this, but keeps all of them at 255
             }
-            for(int i = palette.Count; i < 256; i++)
+            for(int i = palette.Count; i < 255; i++)
             {
                 //Add completely white pixels to the rest of the palette
                 resultChunk.addData(new ByteChunkData(255));

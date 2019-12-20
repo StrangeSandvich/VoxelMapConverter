@@ -118,5 +118,28 @@ namespace VoxelMapConverter
             int newBlue = (int)(one.blue * countone + two.blue * counttwo) / (countone + counttwo);
             return new RGBColor(newred, newGreen, newBlue);
         }
+
+        public static RGBColor Combine(RGBColor one, RGBColor two)
+        {
+            int newred = (int)((one.red + two.red) / 2);
+            int newGreen = (int)((one.green + two.green) / 2);
+            int newBlue = (int)((one.blue + two.blue) / 2);
+            return new RGBColor(newred, newGreen, newBlue);
+        }
+
+        public static RGBColor Combine(List<RGBColor> list)
+        {
+            RGBColor result = list[0];
+            foreach(RGBColor color in list.GetRange(1, list.Count - 1))
+            {
+                result = Combine(result, color);
+            }
+            return result;
+        }
+
+        public override string ToString()
+        {
+            return red.ToString() + " " + green.ToString() + " " + blue.ToString();
+        }
     }
 }

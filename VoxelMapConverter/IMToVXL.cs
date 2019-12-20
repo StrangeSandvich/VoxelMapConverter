@@ -95,7 +95,7 @@ namespace VoxelMapConverter
             RiffChunk masterGRP = new RiffChunk("nGRP");
             masterGRP.addData(new IntChunkData(masterGRPID));
             masterGRP.addData(new DictChunkData()); //empty dict
-            masterGRP.addData(new IntChunkData(modelID + 1)); //Number of models
+            masterGRP.addData(new IntChunkData(modelID)); //Number of models
             foreach(int nodeID in IDForGroup)
             {
                 masterGRP.addData(new IntChunkData(nodeID));

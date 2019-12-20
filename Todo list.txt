@@ -1,16 +1,13 @@
 Todo and wishlist:
 
 Nicer way to display progress
-Update reserved indexes after asking Verc
-Make it so the reservedID shuffle works when number of colors is chosen to be less than the highest reserved id
+Identical chunk fixing?
 
 Bigger things:
+Make a color condenser based on current textures
+Functionality to match indexes to SE textures
+Ability to add additional underground space. Also for water
 Functionality to merge color indexes of existing magicavoxel maps
 Convert BlockNLoad maps
 Convert Minecraft Schematics
 (Use Timothees stuff)
-
-
-Ocean color fix solutions:
-Find map height first. Ignore those blocks. 
-Come in after with a palette shrink that combines all ocean colors
