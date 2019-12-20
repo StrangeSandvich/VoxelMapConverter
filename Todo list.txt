@@ -10,4 +10,3 @@ Ability to add additional underground space. Also for water
 Functionality to merge color indexes of existing magicavoxel maps
 Convert BlockNLoad maps
 Convert Minecraft Schematics
-(Use Timothees stuff)
