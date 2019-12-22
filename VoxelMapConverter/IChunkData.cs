@@ -7,7 +7,7 @@ namespace VoxelMapConverter
 {
     interface IChunkData
     {
-        public void WriteData(BinaryWriter writer);
-        public int ByteSize();
+        void WriteData(BinaryWriter writer);
+        int ByteSize();
     }
 }

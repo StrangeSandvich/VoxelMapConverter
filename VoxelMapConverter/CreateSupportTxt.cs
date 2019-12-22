@@ -40,7 +40,7 @@ namespace VoxelMapConverter
             for(int i = 1; i <= numberOfIndexes; i++)
             {
                 if (Palette.reservedIDs.Contains(i-1)){
-                    lines.Add(i.ToString() + " hazard 2 2 200");
+                    lines.Add(i.ToString() + " cfhazard 2 2 200");
                 } else if (!map.palette.fillerIndexes.Contains(i-1))
                 {
                     lines.Add(i.ToString() + " metal 4 4 200");
