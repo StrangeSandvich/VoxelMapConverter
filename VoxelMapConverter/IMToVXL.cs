@@ -28,9 +28,9 @@ namespace VoxelMapConverter
             Palette palette = map.palette;
 
             //Setup for staging nodes
-            resetNodeID();
+            ResetNodeID();
             IDForGroup = new List<int>();
-            int masterGRPID = getNextNodeID(); //Pass to master Translate
+            int masterGRPID = GetNextNodeID(); //Pass to master Translate
             List<RiffChunk> modelStagings = new List<RiffChunk>();
             int modelID = 0;
 
@@ -84,7 +84,7 @@ namespace VoxelMapConverter
                         chunks.Add(xyzi);
 
                         //Create shape and translate node for the model
-                        modelStagings.AddRange(createStagingChunksForModel(x, y, z, modelID)); //Create translate and shape noded for model
+                        modelStagings.AddRange(CreateStagingChunksForModel(x, y, z, modelID)); //Create translate and shape noded for model
                         //ModelID isn't written to file, it's just the order the models appear
                         modelID++;
                     }
@@ -118,7 +118,7 @@ namespace VoxelMapConverter
 
 
             //Add in all the layer chunks. This may be unneeded
-            chunks.AddRange(createLayrChunks());
+            chunks.AddRange(CreateLayrChunks());
 
             //RGBA palette chunk
             chunks.Add(palette.getPaletteChunk());
@@ -126,11 +126,11 @@ namespace VoxelMapConverter
             //Material chunks. May be unneeded
             for(int i = 1; i <= 256; i++)
             {
-                chunks.Add(createMatlChunk(i));
+                chunks.Add(CreateMatlChunk(i));
             }
 
             //Whatever the robj chunks are...
-            chunks.AddRange(createROBJChunks());
+            chunks.AddRange(CreateROBJChunks());
 
             //Write in the main chunk child size field
             int mainChunkChildDataSize = 0;
@@ -155,17 +155,17 @@ namespace VoxelMapConverter
         }
 
         //We don't use the layer chunks. All objects are layer 1
-        public static List<RiffChunk> createLayrChunks()
+        public static List<RiffChunk> CreateLayrChunks()
         {
             List<RiffChunk> chunksResult = new List<RiffChunk>();
             for(int i = 0; i < 8; i++)
             {
-                chunksResult.Add(createLayrChunk(i));
+                chunksResult.Add(CreateLayrChunk(i));
             }
             return chunksResult;
         }
 
-        public static RiffChunk createLayrChunk(int number)
+        public static RiffChunk CreateLayrChunk(int number)
         {
             RiffChunk chunkResult = new RiffChunk("LAYR");
             chunkResult.addData(new IntChunkData(number));
@@ -177,20 +177,20 @@ namespace VoxelMapConverter
         }
 
         //For staging nodes
-        public static void resetNodeID()
+        public static void ResetNodeID()
         {
             nodeID = 0; //Starts at 1.
         }
-        public static int getNextNodeID()
+        public static int GetNextNodeID()
         {
             nodeID++;
             return nodeID;
         }
 
-        public static List<RiffChunk> createStagingChunksForModel(int offsetX, int offsetY, int offsetZ, int modelID)
+        public static List<RiffChunk> CreateStagingChunksForModel(int offsetX, int offsetY, int offsetZ, int modelID)
         {
-            int transformID = getNextNodeID();
-            int shapeID = getNextNodeID();
+            int transformID = GetNextNodeID();
+            int shapeID = GetNextNodeID();
 
             RiffChunk ShapeChunk = new RiffChunk("nSHP");
             ShapeChunk.addData(new IntChunkData(shapeID));
@@ -215,7 +215,7 @@ namespace VoxelMapConverter
         }
 
         //Might not be needed. Create 256 identical material chunks
-        public static RiffChunk createMatlChunk(int matlID)
+        public static RiffChunk CreateMatlChunk(int matlID)
         {
             RiffChunk matlChunk = new RiffChunk("MATL");
             matlChunk.addData(new IntChunkData(matlID));
@@ -237,7 +237,7 @@ namespace VoxelMapConverter
         }
 
         //This method is a mess. But no reason to waste time cleaning it.
-        public static List<RiffChunk> createROBJChunks()
+        public static List<RiffChunk> CreateROBJChunks()
         {
             List<RiffChunk> chunksResult = new List<RiffChunk>();
 

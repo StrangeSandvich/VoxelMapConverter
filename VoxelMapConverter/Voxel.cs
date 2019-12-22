@@ -22,7 +22,7 @@ namespace VoxelMapConverter
             this.x = x;
             this.y = y;
             this.z = z;
-            this.colorIndex = block.colorIndex;
+            this.colorIndex = block.ColorIndex;
         }
     }
 }
