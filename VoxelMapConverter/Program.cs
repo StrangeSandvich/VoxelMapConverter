@@ -47,6 +47,10 @@ namespace VoxelMapConverter
             Console.WriteLine("Condensing colors. This might take a second...");
             map.PaletteShrink(Math.Min(colorInput, colorCount)); //Use shrink even if at acceptable number of colors to shuffle indexes away from reserved spots
             Console.WriteLine("Shrunk colors.");
+            Console.WriteLine("MagicaVoxel divides the map into models with a maximum size of 256. Can you please give me the X, Y and Z you want your models to be:");
+            int modelSizeX = ReadInt(1, 256);
+            int modelSizeY = ReadInt(1, 256);
+            int modelSizeZ = ReadInt(1, 256);
             Console.WriteLine("Now I just need to write it to a vox file.");
             Console.WriteLine("What do you want me to call the output file (Excluding the .vox). Input nothing place the map ready to load in appdata:");
             string outname = Console.ReadLine();
@@ -55,15 +59,8 @@ namespace VoxelMapConverter
                 outname = VercidiumDirectory + "\\map";
             }
             Console.WriteLine("Alright, I'll try write the vox file with that. Might take a couple of seconds...");
-            IMToVXL.IMToVoxel(map, outname + ".vox");
+            IMToVXL.IMToVoxel(map, outname + ".vox", modelSizeX, modelSizeY, modelSizeZ);
             Console.WriteLine("There we are. There should now be a nice " + outname + ".vox with your map :)");
-            Console.WriteLine("Want me to also make a " + outname + ".txt template with dimensions and things? (y/n)");
-            bool writeTxt = ReadBool();
-            if (writeTxt)
-            {
-                CreateSupportTxt.CreateSupportingTxt(map, outname + ".txt");
-                Console.WriteLine("Should also have a " + outname + ".txt now.");
-            }
             Console.WriteLine("Press enter to close");
             Console.ReadLine();
         }

@@ -7,8 +7,8 @@ namespace VoxelMapConverter
 {
     class Palette
     {
-        //REMEMBER TO SUBTRACT 1. ADDS 1 LATER BECAUSE MAGICAVOXEL INDICES FROM 1
-        public static List<int> reservedIDs = new List<int>(new int[]{8, 16, 17 });
+        //REMEMBER TO SUBTRACT 1 FROM VERCS RESERVED LIST. ADDS 1 LATER BECAUSE MAGICAVOXEL INDICES FROM 1
+        public static List<int> reservedIDs = new List<int>(new int[]{1, 2, 3, 4, 5, 6, 7, 8});
 
         //Please don't shuffle around your indexes
         public List<RGBColor> palette = new List<RGBColor>();

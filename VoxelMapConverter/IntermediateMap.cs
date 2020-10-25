@@ -83,11 +83,11 @@ namespace VoxelMapConverter
         public List<Voxel> getListOfVoxels(int lowx, int highx, int lowy, int highy, int lowz, int highz)
         {
             List<Voxel> resultList = new List<Voxel>();
-            for(int x = lowx; x < highx; x++)
+            for(int x = lowx; x < Math.Min(highx, sizeX); x++)
             {
-                for(int y = lowy; y < highy; y++)
+                for(int y = lowy; y < Math.Min(highy, sizeY); y++)
                 {
-                    for(int z = lowz; z < highz; z++)
+                    for(int z = lowz; z < Math.Min(highz, sizeZ); z++)
                     {
                         Block block = getBlockAt(x, y, z);
                         if (block.ID != Block.AIR)

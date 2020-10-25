@@ -7,6 +7,7 @@ namespace VoxelMapConverter
 {
     class CreateSupportTxt
     {
+        //Deprecated, Vercidium now uses a json file for SE specific map data
         public static void CreateSupportingTxt(IntermediateMap map, string outfileName)
         {
             List<string> lines = new List<string>();

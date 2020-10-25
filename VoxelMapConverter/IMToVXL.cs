@@ -10,7 +10,7 @@ namespace VoxelMapConverter
         public static int nodeID;
         public static List<int> IDForGroup;
 
-        public static void IMToVoxel(IntermediateMap map, string outfileName)
+        public static void IMToVoxel(IntermediateMap map, string outfileName, int modelSizeX, int modelSizeY, int modelSizeZ)
         {
             FileStream stream = new FileStream(outfileName, FileMode.Create, FileAccess.Write,
                 FileShare.Write);
@@ -34,22 +34,17 @@ namespace VoxelMapConverter
             List<RiffChunk> modelStagings = new List<RiffChunk>();
             int modelID = 0;
 
-            //Seperate the world into 64x64x64 regions that become a model each
+            //Seperate the world into regions that become a model each
             int mapheight = map.sizeZ;
-            for (int x = 0; x < 512; x+= 64)
+            for (int x = 0; x < 512; x+= modelSizeX)
             {
                 Console.Write("|");
-                for(int y = 0; y < 512; y += 64)
+                for(int y = 0; y < 512; y += modelSizeY)
                 {
-                    for(int z = 0; z < mapheight+64; z += 64) //Map may not be that high, but getListOfVoxels will just return nothing for out of bounds values. 
+                    for(int z = 0; z < mapheight+modelSizeZ; z += modelSizeZ) //Map may not be that high, but getListOfVoxels will just return nothing for out of bounds values. 
                     {
-                        //Make sure not to go out of bounds
-                        int upperBlock = z + 64;
-                        if (upperBlock > mapheight)
-                        {
-                            upperBlock = mapheight;
-                        }
-                        List<Voxel> voxels = map.getListOfVoxels(x, x + 64, y, y + 64, z, upperBlock);
+                        //The function will limit sizes to actual map boundaries
+                        List<Voxel> voxels = map.getListOfVoxels(x, x + modelSizeX, y, y + modelSizeY, z, z + modelSizeZ);
                         //Find out if chunk even has any voxels
                         if(voxels.Count == 0)
                         {
@@ -57,11 +52,11 @@ namespace VoxelMapConverter
                             continue;
                         }
 
-                        //Hardcode size to be 64x64x64
+                        //I've not checked that this is just xyz, assuming it is
                         RiffChunk size = new RiffChunk("SIZE");
-                        size.addData(new IntChunkData(64));
-                        size.addData(new IntChunkData(64));
-                        size.addData(new IntChunkData(64));
+                        size.addData(new IntChunkData(modelSizeX));
+                        size.addData(new IntChunkData(modelSizeY));
+                        size.addData(new IntChunkData(modelSizeZ));
                         chunks.Add(size);
 
                         //Get a region of voxels and make them a model
@@ -84,7 +79,7 @@ namespace VoxelMapConverter
                         chunks.Add(xyzi);
 
                         //Create shape and translate node for the model
-                        modelStagings.AddRange(CreateStagingChunksForModel(x, y, z, modelID)); //Create translate and shape noded for model
+                        modelStagings.AddRange(CreateStagingChunksForModel(x, y, z, modelID, modelSizeX, modelSizeY, modelSizeZ)); //Create translate and shape noded for model
                         //ModelID isn't written to file, it's just the order the models appear
                         modelID++;
                     }
@@ -187,7 +182,7 @@ namespace VoxelMapConverter
             return nodeID;
         }
 
-        public static List<RiffChunk> CreateStagingChunksForModel(int offsetX, int offsetY, int offsetZ, int modelID)
+        public static List<RiffChunk> CreateStagingChunksForModel(int offsetX, int offsetY, int offsetZ, int modelID, int modelSizeX, int modelSizeY, int modelSizeZ)
         {
             int transformID = GetNextNodeID();
             int shapeID = GetNextNodeID();
@@ -208,7 +203,7 @@ namespace VoxelMapConverter
             TranslateChunk.addData(new IntChunkData(0)); //Layer ID
             TranslateChunk.addData(new IntChunkData(1)); //Number of frames is always 1
             List<(string, string)> dict = new List<(string, string)>();
-            dict.Add(("_t", "" + (offsetX+32) + " " + (offsetY+32) + " " + (offsetZ+32))); //Translation
+            dict.Add(("_t", "" + (offsetX+modelSizeX/2) + " " + (offsetY+modelSizeY/2) + " " + (offsetZ+modelSizeZ/2))); //Translation
             TranslateChunk.addData(new DictChunkData(dict));
 
             return new List<RiffChunk>(){TranslateChunk, ShapeChunk};
