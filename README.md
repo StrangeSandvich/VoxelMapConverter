@@ -27,15 +27,13 @@ Tell the program if you want it to keep the ocean blocks (Sector's Edge will not
 
 Let the program parse the map.
 
-Choose how many unique colors the map should keep. Can maximum be 251 due to MagicaVoxel limitations.
+Choose how many unique colors the map should keep.
 
 Give the program the name of the output file. Leave empty to place it directly where Sectors Edge loads it for the ship.
 
 Let the program write the .vox file.
 
-Tell the program if you want it to generate a template map.txt file for Sectors Edge specific configuration. 
-
 Find the output file next to the program when done. 
 
 Note that Ace of Spades maps have a bunch of "solid" blocks that it doesn't store color for. All these blocks are given color index 1 and can be changed in MagicaVoxel.
-Sectors Edge has a number of block indexes that are reserved for special purposes. As of right now those indexes are 9, 17 and 18 and they are not used. 
+Sectors Edge has a number of block indexes that are reserved for special purposes. See the map making guide on the forum.
