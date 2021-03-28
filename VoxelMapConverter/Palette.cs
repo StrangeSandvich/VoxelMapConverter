@@ -7,19 +7,32 @@ namespace VoxelMapConverter
 {
     class Palette
     {
-        //REMEMBER TO SUBTRACT 1 FROM VERCS RESERVED LIST. ADDS 1 LATER BECAUSE MAGICAVOXEL INDICES FROM 1
-        public static List<int> reservedIDs = new List<int>(new int[]{1, 2, 3, 4, 5, 6, 7, 8});
+
+        public const int SECTORS_EDGE_RESERVED_INDEXES = 17;
+
+        public int paletteOffset;
 
         //Please don't shuffle around your indexes
         public List<RGBColor> palette = new List<RGBColor>();
         public List<int> indexCount = new List<int>(); //Keep track of how many blocks use one color. 
         public List<int> fillerIndexes = new List<int>();
 
-        public Palette()
+        public Palette(int paletteOffset)
         {
+            this.paletteOffset = paletteOffset;
             //Solid ground color
             palette.Add(new RGBColor(0,0,0, true));
             indexCount.Add(0);
+        }
+
+        public Palette(byte[,] bytePalette)
+        {
+            paletteOffset = 0;
+            for(int i = 0; i <= 254; i++)
+            {
+                palette.Add(new RGBColor(bytePalette[i, 0], bytePalette[i, 1], bytePalette[i, 2]));
+                indexCount.Add(0);
+            }
         }
 
         public int getExactColorIndex(RGBColor color)
@@ -28,11 +41,11 @@ namespace VoxelMapConverter
             if (index != -1)
             {
                 indexCount[index]++;
-                return index;
+                return index + paletteOffset;
             }
             palette.Add(color);
             indexCount.Add(1);
-            return palette.Count-1; //Last new insert
+            return palette.Count-1 + paletteOffset; //Last new insert
         }
 
         public int[,] CalculateDistanceForIndex(int index, int[,] distances)
@@ -157,37 +170,21 @@ namespace VoxelMapConverter
                     resultList[i] = resultList[resultList[i]];
                 }
             }
-            foreach (int reservedID in reservedIDs)
-            {
-                if(reservedID >= newPalette.Count)
-                {
-                    while(reservedID != newPalette.Count)
-                    {
-                        fillerIndexes.Add(newPalette.Count);
-                        newPalette.Add(new RGBColor(0, 0, 0));
 
-                    }
-                    newPalette.Add(new RGBColor(0, 0, 0));
-                } else
-                {
-                    int replacementID = newPalette.Count;
-                    newPalette.Add(newPalette[reservedID]);
-                    resultList[reservedID] = replacementID;
-                    newPalette[reservedID] = new RGBColor(0, 0, 0);
-                }
+            //Shift results by palette offset
+            List<int> shiftedResults = new List<int>();
+            for(int i = 0; i < paletteOffset; i++)
+            {
+                shiftedResults.Add(paletteOffset);
             }
             for(int i = 0; i < resultList.Count; i++)
             {
-                int index = resultList[i];
-                if (reservedIDs.Contains(index))
-                {
-                    resultList[i] = resultList[index]; //Forward to the replacement ID
-                }
+                shiftedResults.Add(resultList[i] + 17);
             }
 
             //Write in the new condensed palette and return the resultlist for the map to update block indexes
             palette = newPalette;
-            return resultList;
+            return shiftedResults; //Shift by palette offset
         }
 
 
@@ -195,6 +192,14 @@ namespace VoxelMapConverter
         public RiffChunk getPaletteChunk()
         {
             RiffChunk resultChunk = new RiffChunk("RGBA");
+            for(int i = 1; i < paletteOffset; i++)
+            {
+                //Add completely white pixels for the reserved indexes
+                resultChunk.addData(new ByteChunkData(255));
+                resultChunk.addData(new ByteChunkData(255));
+                resultChunk.addData(new ByteChunkData(255));
+                resultChunk.addData(new ByteChunkData(255));
+            }
             foreach(RGBColor color in palette)
             {
                 //RGBA
@@ -203,7 +208,7 @@ namespace VoxelMapConverter
                 resultChunk.addData(new ByteChunkData(color.blue));
                 resultChunk.addData(new ByteChunkData(255)); //Magicavoxel doesn't seem to use this, but keeps all of them at 255
             }
-            for(int i = palette.Count; i < 255; i++)
+            for(int i = paletteOffset + palette.Count; i < 255; i++)
             {
                 //Add completely white pixels to the rest of the palette
                 resultChunk.addData(new ByteChunkData(255));

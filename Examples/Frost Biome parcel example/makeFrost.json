@@ -1,0 +1,9 @@
+{
+	"function": "parcel",
+	"parcelConfiguration": "frostConfig",
+	"mirrorMap": true,
+	"modelSizeX": 128,
+	"modelSizeY": 256,
+	"modelSizeZ": 256,
+	"outputName": "",
+}

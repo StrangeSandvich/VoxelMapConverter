@@ -10,15 +10,15 @@ namespace VoxelMapConverter
         //private List<List<List<Block>>> mapXYZI;
         private Block[,,] mapXYZI;
         public Block fillBlock;
-        public Palette palette { get; }
+        public Palette palette;
         public RGBColor oceanColor { set; get; }
 
-        public IntermediateMap(int sizeX, int sizeY, int sizeZ, int filltype)
+        public IntermediateMap(int sizeX, int sizeY, int sizeZ, int filltype, Palette palette)
         {
             this.sizeX = sizeX;
             this.sizeY = sizeY;
             this.sizeZ = sizeZ;
-            this.palette = new Palette();
+            this.palette = palette;
             this.fillBlock = new Block(filltype, palette);
             this.oceanColor = new RGBColor(58, 58, 46);
 
@@ -98,6 +98,32 @@ namespace VoxelMapConverter
                 }
             }
             return resultList;
+        }
+
+        public void mirrorOnY()
+        {
+            int oldSizeY = sizeY;
+            sizeY = sizeY * 2;
+            Block[,,] mirrored = new Block[sizeX, sizeY, sizeZ];
+
+            for(int x = 0; x < sizeX; x++)
+            {
+                for(int z = 0; z < sizeZ; z++)
+                {
+                    for(int y = 0; y < oldSizeY; y++)
+                    {
+                        Block block = mapXYZI[x, y, z];
+                        if(block == null)
+                        {
+                            continue;
+                        }
+                        mirrored[x, y, z] = block;
+                        mirrored[x, sizeY - 1 - y, z] = block;
+                    }
+                }
+            }
+
+            mapXYZI = mirrored;
         }
     }
 }

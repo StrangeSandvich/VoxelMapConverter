@@ -1,9 +1,25 @@
 Todo and wishlist:
 
-Nicer way to display progress
-Identical chunk fixing?
+TODO procedural generator:
+Rotation and mirror randomization
+Documentation
+Program config documentation
 
+********************
+Wishlist:
+********************
+Cleaner format for config file
+	Some vector3's instead
+	Group parcels by size so you don't have to repeat yourself?
+
+Padding for sky and ground
+	If something barely sticks into the ground or air, have an option that automatically extends it to fit
+
+**************
 Bigger things:
+**************
+Nicer way to display progress
+Ability to just load a standard MV map for mirroring and model sizing
 Make a color condenser based on current textures
 Functionality to match indexes to SE textures
 Ability to add additional underground space. Also for water

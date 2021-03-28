@@ -36,10 +36,10 @@ namespace VoxelMapConverter
 
             //Seperate the world into regions that become a model each
             int mapheight = map.sizeZ;
-            for (int x = 0; x < 512; x+= modelSizeX)
+            for (int x = 0; x < map.sizeX; x+= modelSizeX)
             {
                 Console.Write("|");
-                for(int y = 0; y < 512; y += modelSizeY)
+                for(int y = 0; y < map.sizeY; y += modelSizeY)
                 {
                     for(int z = 0; z < mapheight+modelSizeZ; z += modelSizeZ) //Map may not be that high, but getListOfVoxels will just return nothing for out of bounds values. 
                     {
@@ -64,15 +64,13 @@ namespace VoxelMapConverter
                         xyzi.addData(new IntChunkData(voxels.Count));
                         foreach (Voxel voxel in voxels)
                         {
-                            //Remember that magicavoxel index starts at 1
-                            int colorIndex = voxel.colorIndex+1;
                             try
                             {
-                                xyzi.addData(new VoxelChunkData(Convert.ToByte(voxel.x-x), Convert.ToByte(voxel.y-y), Convert.ToByte(voxel.z-z), Convert.ToByte(colorIndex)));
+                                xyzi.addData(new VoxelChunkData(Convert.ToByte(voxel.x-x), Convert.ToByte(voxel.y-y), Convert.ToByte(voxel.z-z), Convert.ToByte(voxel.colorIndex)));
                             } catch(Exception e)
                             {
                                 Console.WriteLine("Byte overflow with voxel " + voxel.x + ", " + voxel.y + ", " + voxel.z + ". With object xyz being " + x + ", " + y + "," + z);
-                                Console.WriteLine("Color index of " + colorIndex);
+                                Console.WriteLine("Color index of " + voxel.colorIndex);
                                 throw e;
                             }
                         }
