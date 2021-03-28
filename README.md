@@ -1,3 +1,8 @@
+# Sectors Edge map making utility by Dodo Sandvich
+
+Now both a converter from Ace of Spades maps and for parcel generation of new ones
+See the individual readme's for each functionality
+
 # VoxelMapConverter
 Tool to convert Ace of Spades maps to MagicaVoxel files for use in Sectors Edge map making.
 
@@ -16,24 +21,15 @@ Note that Jagex AoS map files can be higher than 64 blocks tall
 
 Vox format: https://github.com/ephtracy/voxel-model
 
-# How to use
-Download the Program folder with the .exe and support files 
+# Parcel randomizer
 
-Place Ace of Spades .vxl map in the Program folder and run the program
+Randomize maps with a parcel and plot system
 
-Put in the Ace of Spades map name. (If you want to convert MyMap.vxl, put in "MyMap")
+Inspired by such a system from XCOM 2
 
-Tell the program if you want it to keep the ocean blocks (Sector's Edge will not use them...)
+# Using the program
+There are 2 packages here:
 
-Let the program parse the map.
-
-Choose how many unique colors the map should keep.
-
-Give the program the name of the output file. Leave empty to place it directly where Sectors Edge loads it for the ship.
-
-Let the program write the .vox file.
-
-Find the output file next to the program when done. 
-
-Note that Ace of Spades maps have a bunch of "solid" blocks that it doesn't store color for. All these blocks are given color index 1 and can be changed in MagicaVoxel.
-Sectors Edge has a number of block indexes that are reserved for special purposes. See the map making guide on the forum.
+SelfContainedProgram holds everything needed to run the program (Which is some 200 odd files)
+Framework2_1Program requires that you have .Net framework 2.1 installed. And only has 5 files
+In both instances, download the folder and run VoxelMapConverter.exe

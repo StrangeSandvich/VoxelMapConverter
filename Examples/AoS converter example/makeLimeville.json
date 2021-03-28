@@ -1,0 +1,8 @@
+{
+	"function":"aosConverter",
+	"aosFile":"Limeville",
+	"keepOcean": false,
+	"colourCount": 230,
+	
+	"outputName": "Limeville",
+}

@@ -20,7 +20,7 @@ namespace VoxelMapConverter
                 ColorIndex = -1;
             } else
             {
-                ColorIndex = 0;
+                ColorIndex = Palette.SECTORS_EDGE_RESERVED_INDEXES;
             }
         }
 
@@ -28,6 +28,12 @@ namespace VoxelMapConverter
         {
             this.ID = UNASSIGNED;
             ColorIndex = palette.getExactColorIndex(color);
+        }
+
+        public Block(int colorIndex)
+        {
+            this.ID = UNASSIGNED;
+            this.ColorIndex = colorIndex;
         }
     }
 }

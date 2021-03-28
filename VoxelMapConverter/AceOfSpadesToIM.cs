@@ -24,7 +24,7 @@ namespace VoxelMapConverter
                 finalHeight--;
             }
             IntermediateMap mapResult;
-            mapResult = new IntermediateMap(aosSizeX, aosSizeY, finalHeight, Block.AOSSOLID);
+            mapResult = new IntermediateMap(aosSizeX, aosSizeY, finalHeight, Block.AOSSOLID, new Palette(Palette.SECTORS_EDGE_RESERVED_INDEXES));
             Palette palette = mapResult.palette;
             Block airBlock = new Block(Block.AIR, palette);
             for (int x = 0; x < aosSizeX; x++)

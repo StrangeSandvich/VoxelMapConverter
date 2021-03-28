@@ -1,0 +1,451 @@
+{
+    "primaryParcel": {
+		"sizeX": 128,
+		"sizeY": 256,
+		"sizeZ": 128,
+		"sourceFile": "master_blueprint.vox",
+		"connections": {
+			"connectionNames": [
+				"8ground",
+				"8ground",
+				"8ground",
+				"8ground",
+				"sky",
+				"ground",
+			]
+		},
+		"parcelPlots": [
+			{
+				"plotID": "primary",
+				"sizeX": 96,
+				"sizeY": 192,
+				"sizeZ": 32,
+				"offsetX": 16,
+				"offsetY": 63,
+				"offsetZ": 1,
+				"connections": {
+					"connectionNames": [
+						"8ground",
+						"8ground",
+						"8ground",
+						"8ground",
+						"sky",
+						"ground",
+					]
+				}
+			}
+		]
+	},
+	
+    "insertParcels":
+    [
+		{
+            "sizeX": 32,
+			"sizeY": 32,
+			"sizeZ": 32,
+			"sourceFile": "32_32_32_crater.vox",
+			"connections": {
+				"connectionNames": [
+					"8ground",
+					"8ground",
+					"8ground",
+					"8ground",
+					"sky",
+					"ground",
+				]
+			},
+			"parcelPlots": [
+				{
+					"sizeX": 8,
+					"sizeY": 8,
+					"sizeZ": 32,
+					"offsetX": 0,
+					"offsetY": 24,
+					"offsetZ": 0,
+					"connections": {
+						"connectionNames": [
+						"8ground",
+						"8ground",
+						"8ground",
+						"8ground",
+						"sky",
+						"ground",
+						]
+					}
+				}
+			],
+        },
+		{
+            "sizeX": 32,
+			"sizeY": 32,
+			"sizeZ": 32,
+			"sourceFile": "32_32_32_ridge.vox",
+			"connections": {
+				"connectionNames": [
+					"8ground",
+					"8ground",
+					"8ground",
+					"8ground",
+					"sky",
+					"ground",
+				]
+			},
+			"parcelPlots": [
+			{
+					"sizeX": 8,
+					"sizeY": 8,
+					"sizeZ": 32,
+					"offsetX": 12,
+					"offsetY": 13,
+					"offsetZ": 3,
+					"connections": {
+						"connectionNames": [
+						"8ground",
+						"8ground",
+						"8ground",
+						"8ground",
+						"sky",
+						"ground",
+						]
+					}
+				}
+			],
+        },
+		{
+            "sizeX": 32,
+			"sizeY": 32,
+			"sizeZ": 32,
+			"sourceFile": "32_32_32_icespikes.vox",
+			"connections": {
+				"connectionNames": [
+					"8ground",
+					"8ground",
+					"8ground",
+					"8ground",
+					"sky",
+					"ground",
+				]
+			},
+			"parcelPlots": [],
+        },
+		{
+            "sizeX": 32,
+			"sizeY": 32,
+			"sizeZ": 32,
+			"sourceFile": "32_32_32_nested.vox",
+			"connections": {
+				"connectionNames": [
+					"8ground",
+					"8ground",
+					"8ground",
+					"8ground",
+					"sky",
+					"ground",
+				]
+			},
+			"parcelPlots": [
+				{
+					"sizeX": 16,
+					"sizeY": 16,
+					"sizeZ": 32,
+					"offsetX": 15,
+					"offsetY": 1,
+					"offsetZ": 3,
+					"connections": {
+						"connectionNames": [
+						"8ground",
+						"8ground",
+						"8ground",
+						"8ground",
+						"sky",
+						"ground",
+						]
+					}
+				},
+				{
+					"sizeX": 8,
+					"sizeY": 8,
+					"sizeZ": 32,
+					"offsetX": 2,
+					"offsetY": 2,
+					"offsetZ": 0,
+					"connections": {
+						"connectionNames": [
+						"8ground",
+						"8ground",
+						"8ground",
+						"8ground",
+						"sky",
+						"ground",
+						]
+					}
+				},
+				{
+					"sizeX": 8,
+					"sizeY": 8,
+					"sizeZ": 32,
+					"offsetX": 3,
+					"offsetY": 12,
+					"offsetZ": 1,
+					"connections": {
+						"connectionNames": [
+						"8ground",
+						"8ground",
+						"8ground",
+						"8ground",
+						"sky",
+						"ground",
+						]
+					}
+				},
+				{
+					"sizeX": 8,
+					"sizeY": 8,
+					"sizeZ": 32,
+					"offsetX": 0,
+					"offsetY": 24,
+					"offsetZ": 0,
+					"connections": {
+						"connectionNames": [
+						"8ground",
+						"8ground",
+						"8ground",
+						"8ground",
+						"sky",
+						"ground",
+						]
+					}
+				},
+				{
+					"sizeX": 8,
+					"sizeY": 8,
+					"sizeZ": 32,
+					"offsetX": 11,
+					"offsetY": 22,
+					"offsetZ": 2,
+					"connections": {
+						"connectionNames": [
+						"8ground",
+						"8ground",
+						"8ground",
+						"8ground",
+						"sky",
+						"ground",
+						]
+					}
+				},
+				{
+					"sizeX": 8,
+					"sizeY": 8,
+					"sizeZ": 32,
+					"offsetX": 23,
+					"offsetY": 23,
+					"offsetZ": 0,
+					"connections": {
+						"connectionNames": [
+						"8ground",
+						"8ground",
+						"8ground",
+						"8ground",
+						"sky",
+						"ground",
+						]
+					}
+				}
+			],
+        },
+		{
+            "sizeX": 32,
+			"sizeY": 32,
+			"sizeZ": 32,
+			"sourceFile": "32_32_32_overpass.vox",
+			"connections": {
+				"connectionNames": [
+					"8ground",
+					"8ground",
+					"8ground",
+					"8ground",
+					"sky",
+					"ground",
+				]
+			},
+			"parcelPlots": [
+			{
+					"sizeX": 8,
+					"sizeY": 8,
+					"sizeZ": 32,
+					"offsetX": 1,
+					"offsetY": 1,
+					"offsetZ": 2,
+					"connections": {
+						"connectionNames": [
+						"8ground",
+						"8ground",
+						"8ground",
+						"8ground",
+						"sky",
+						"ground",
+						]
+					}
+				},
+				{
+					"sizeX": 8,
+					"sizeY": 8,
+					"sizeZ": 32,
+					"offsetX": 12,
+					"offsetY": 20,
+					"offsetZ": 6,
+					"connections": {
+						"connectionNames": [
+						"8ground",
+						"8ground",
+						"8ground",
+						"8ground",
+						"sky",
+						"ground",
+						]
+					}
+				}
+			],
+        },
+		{
+            "sizeX": 16,
+			"sizeY": 16,
+			"sizeZ": 32,
+			"sourceFile": "16_16_32_crates.vox",
+			"connections": {
+				"connectionNames": [
+					"8ground",
+					"8ground",
+					"8ground",
+					"8ground",
+					"sky",
+					"ground",
+				]
+			},
+			"parcelPlots": [],
+        },
+		{
+            "sizeX": 16,
+			"sizeY": 16,
+			"sizeZ": 32,
+			"sourceFile": "16_16_32_flat.vox",
+			"connections": {
+				"connectionNames": [
+					"8ground",
+					"8ground",
+					"8ground",
+					"8ground",
+					"sky",
+					"ground",
+				]
+			},
+			"parcelPlots": [],
+        },
+		{
+            "sizeX": 16,
+			"sizeY": 16,
+			"sizeZ": 32,
+			"sourceFile": "16_16_32_rebar.vox",
+			"connections": {
+				"connectionNames": [
+					"8ground",
+					"8ground",
+					"8ground",
+					"8ground",
+					"sky",
+					"ground",
+				]
+			},
+			"parcelPlots": [],
+        },
+		{
+            "sizeX": 8,
+			"sizeY": 8,
+			"sizeZ": 32,
+			"sourceFile": "8_8_32_flat.vox",
+			"connections": {
+				"connectionNames": [
+					"8ground",
+					"8ground",
+					"8ground",
+					"8ground",
+					"sky",
+					"ground",
+				]
+			},
+			"parcelPlots": [],
+        },
+		{
+            "sizeX": 8,
+			"sizeY": 8,
+			"sizeZ": 32,
+			"sourceFile": "8_8_32_ruin.vox",
+			"connections": {
+				"connectionNames": [
+					"8ground",
+					"8ground",
+					"8ground",
+					"8ground",
+					"sky",
+					"ground",
+				]
+			},
+			"parcelPlots": [],
+        },
+		{
+            "sizeX": 8,
+			"sizeY": 8,
+			"sizeZ": 32,
+			"sourceFile": "8_8_32_spike.vox",
+			"connections": {
+				"connectionNames": [
+					"8ground",
+					"8ground",
+					"8ground",
+					"8ground",
+					"sky",
+					"ground",
+				]
+			},
+			"parcelPlots": [],
+        },
+    ],
+	"connections": [
+		{
+			"name": "8ground",
+			"flip": true,
+			"rotate": false,
+		},
+		{
+			"name": "sky",
+			"flip": true,
+			"rotate": true,
+		},
+		{
+			"name": "ground",
+			"flip": true,
+			"rotate": true,
+		}
+	],
+	"plotDivisions": [
+		{
+			"sizeX": 96,
+			"sizeY": 192,
+			"sizeZ": 32,
+			"divisionsX": [32],
+			"divisionsY": [32],
+			"divisionsZ": [32],
+			"connections": {
+				"connectionNames": [
+					"8ground",
+					"8ground",
+					"8ground",
+					"8ground",
+					"sky",
+					"ground",
+				]
+			}
+		}
+	]
+}
